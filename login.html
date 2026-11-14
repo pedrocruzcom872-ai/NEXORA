@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080B12">
+  <title>Iniciar sesión - NEXORA</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #080B12;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 390px;
+      background: #111827;
+      padding: 28px;
+      border-radius: 20px;
+    }
+
+    h1 {
+      color: #a78bfa;
+      text-align: center;
+    }
+
+    p {
+      color: #aab2c5;
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px;
+      margin: 9px 0;
+      border: 1px solid #374151;
+      border-radius: 10px;
+      background: #080B12;
+      color: white;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 15px;
+      border: 0;
+      border-radius: 10px;
+      background: #8b5cf6;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+    }
+
+    a {
+      color: #a78bfa;
+    }
+
+    #mensaje {
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>NEXORA</h1>
+    <p>Inicia sesión para continuar</p>
+
+    <form id="loginForm">
+      <input
+        id="correo"
+        type="email"
+        placeholder="Correo electrónico"
+        autocomplete="email"
+        required
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Contraseña"
+        autocomplete="current-password"
+        required
+      >
+
+      <button id="botonLogin" type="submit">
+        Iniciar sesión
+      </button>
+    </form>
+
+    <p id="mensaje" role="status" aria-live="polite"></p>
+
+    <p>¿No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+    import {
+      getAuth,
+      signInWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbLF8HxEFCGkn00Mzn_Q3JOPOc2lSkk7Y",
+      authDomain: "nexora-c7a6f.firebaseapp.com",
+      projectId: "nexora-c7a6f",
+      storageBucket: "nexora-c7a6f.firebasestorage.app",
+      messagingSenderId: "322230049221",
+      appId: "1:322230049221:web:c54317e2aafd0a620053ac"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const formulario = document.getElementById("loginForm");
+    const mensaje = document.getElementById("mensaje");
+    const boton = document.getElementById("botonLogin");
+
+    formulario.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const correo = document.getElementById("correo").value.trim();
+      const password = document.getElementById("password").value;
+
+      boton.disabled = true;
+      boton.textContent = "Ingresando...";
+      mensaje.textContent = "";
+
+      try {
+        await signInWithEmailAndPassword(auth, correo, password);
+
+        mensaje.textContent = "¡Bienvenido a NEXORA!";
+
+      } catch (error) {
+        const errores = {
+          "auth/invalid-credential":
+            "Correo o contraseña incorrectos.",
+          "auth/invalid-email":
+            "El correo electrónico no es válido.",
+          "auth/too-many-requests":
+            "Demasiados intentos. Inténtalo más tarde.",
+          "auth/network-request-failed":
+            "Error de conexión. Inténtalo de nuevo."
+        };
+
+        mensaje.textContent =
+          errores[error.code] || "No se pudo iniciar sesión.";
+
+      } finally {
+        boton.disabled = false;
+        boton.textContent = "Iniciar sesión";
+      }
+    });
+  </script>
+</body>
+</html>
