@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,8 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080B12">
   <title>Crear cuenta - NEXORA</title>
+
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -17,6 +20,7 @@
       place-items: center;
       padding: 20px;
     }
+
     .card {
       width: 100%;
       max-width: 390px;
@@ -24,8 +28,17 @@
       padding: 28px;
       border-radius: 20px;
     }
-    h1 { color: #a78bfa; text-align: center; }
-    p { color: #aab2c5; text-align: center; }
+
+    h1 {
+      color: #a78bfa;
+      text-align: center;
+    }
+
+    p {
+      color: #aab2c5;
+      text-align: center;
+    }
+
     input {
       width: 100%;
       padding: 14px;
@@ -35,6 +48,7 @@
       background: #080B12;
       color: white;
     }
+
     button {
       width: 100%;
       padding: 14px;
@@ -44,32 +58,150 @@
       background: #8b5cf6;
       color: white;
       font-weight: bold;
+      cursor: pointer;
     }
-    a { color: #a78bfa; }
-    #mensaje { font-size: 14px; }
+
+    button:disabled {
+      opacity: 0.6;
+    }
+
+    a {
+      color: #a78bfa;
+    }
+
+    #mensaje {
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
   </style>
 </head>
+
 <body>
   <div class="card">
     <h1>NEXORA</h1>
     <p>Crea tu cuenta para comenzar</p>
 
     <form id="registroForm">
-      <input id="nombre" type="text" placeholder="Tu nombre" required>
-      <input id="correo" type="email" placeholder="Correo electrónico" required>
-      <input id="password" type="password" placeholder="Contraseña" required minlength="6">
-      <button type="submit">Crear cuenta</button>
+      <input
+        id="nombre"
+        type="text"
+        placeholder="Tu nombre"
+        autocomplete="name"
+        required
+        maxlength="60"
+      >
+
+      <input
+        id="correo"
+        type="email"
+        placeholder="Correo electrónico"
+        autocomplete="email"
+        required
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Contraseña"
+        autocomplete="new-password"
+        required
+        minlength="6"
+      >
+
+      <button id="botonRegistro" type="submit">
+        Crear cuenta
+      </button>
     </form>
 
-    <p id="mensaje"></p>
+    <p id="mensaje" role="status" aria-live="polite"></p>
+
     <p>¿Ya tienes cuenta? <a href="index.html">Volver</a></p>
   </div>
 
-  <script>
-    document.getElementById("registroForm").addEventListener("submit", function(e) {
+  <script type="module">
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      updateProfile
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAbLF8HxEFCGkn00Mzn_Q3JOPOc2lSkk7Y",
+      authDomain: "nexora-c7a6f.firebaseapp.com",
+      projectId: "nexora-c7a6f",
+      storageBucket: "nexora-c7a6f.firebasestorage.app",
+      messagingSenderId: "322230049221",
+      appId: "1:322230049221:web:c54317e2aafd0a620053ac"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const formulario = document.getElementById("registroForm");
+    const mensaje = document.getElementById("mensaje");
+    const boton = document.getElementById("botonRegistro");
+
+    formulario.addEventListener("submit", async (e) => {
       e.preventDefault();
-      document.getElementById("mensaje").textContent =
-        "La pantalla está lista. Ahora conectaremos el registro con Firebase.";
+
+      const nombre = document.getElementById("nombre").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!nombre) {
+        mensaje.textContent = "Escribe tu nombre.";
+        return;
+      }
+
+      if (password.length < 6) {
+        mensaje.textContent = "La contraseña debe tener al menos 6 caracteres.";
+        return;
+      }
+
+      boton.disabled = true;
+      boton.textContent = "Creando cuenta...";
+      mensaje.textContent = "";
+
+      try {
+        const resultado = await createUserWithEmailAndPassword(
+          auth,
+          correo,
+          password
+        );
+
+        await updateProfile(resultado.user, {
+          displayName: nombre
+        });
+
+        mensaje.textContent =
+          "¡Tu cuenta de NEXORA fue creada correctamente!";
+
+        formulario.reset();
+
+      } catch (error) {
+        const errores = {
+          "auth/email-already-in-use":
+            "Este correo ya tiene una cuenta.",
+          "auth/invalid-email":
+            "El correo electrónico no es válido.",
+          "auth/weak-password":
+            "La contraseña es demasiado débil.",
+          "auth/operation-not-allowed":
+            "El registro por correo no está habilitado.",
+          "auth/network-request-failed":
+            "Error de conexión. Inténtalo de nuevo."
+        };
+
+        mensaje.textContent =
+          errores[error.code] || "No se pudo crear la cuenta. Inténtalo otra vez.";
+
+      } finally {
+        boton.disabled = false;
+        boton.textContent = "Crear cuenta";
+      }
     });
   </script>
 </body>
