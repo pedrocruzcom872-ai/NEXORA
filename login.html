@@ -160,8 +160,8 @@
             "Error de conexión. Inténtalo de nuevo."
         };
 
-        mensaje.textContent =
-          errores[error.code] || "No se pudo iniciar sesión.";
+        console.error("Error Firebase:", error.code, error.message);
+mensaje.textContent = "Error: " + error.code;
 
       } finally {
         boton.disabled = false;
