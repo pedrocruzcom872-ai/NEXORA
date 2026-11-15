@@ -146,7 +146,7 @@
       try {
         await signInWithEmailAndPassword(auth, correo, password);
 
-        mensaje.textContent = "¡Bienvenido a NEXORA!";
+        window.location.href = "inicio.html";
 
       } catch (error) {
         const errores = {
