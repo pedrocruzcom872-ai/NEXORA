@@ -201,6 +201,26 @@ nav b {
   <span><b>♡</b>Actividad</span>
   <span><b>♙</b>Perfil</span>
 </nav>
+<script>
+const videos = document.querySelectorAll(".video-real");
 
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    const video = entry.target;
+
+    if (entry.isIntersecting) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  });
+}, {
+  threshold: 0.6
+});
+
+videos.forEach((video) => {
+  observer.observe(video);
+});
+  </script>
 </body>
 </html>
