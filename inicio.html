@@ -132,6 +132,18 @@ nav b {
   font-size: 21px;
   margin-bottom: 3px;
 }
+  .like-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.like-btn small {
+  display: block;
+  font-size: 12px;
+}
 </style>
 </head>
 
@@ -150,7 +162,9 @@ nav b {
   Tu navegador no puede reproducir este video.
     </video>
     <div class="actions">
-      <span>♡<small>0</small></span>
+      <button class="like-btn" onclick="darLike(this)">
+  ♡ <small>0</small>
+      </button>
       <span>▢<small>0</small></span>
       <span>↗<small>Compartir</small></span>
     </div>
@@ -218,6 +232,22 @@ const observer = new IntersectionObserver((entries) => {
 videos.forEach((video) => {
   observer.observe(video);
 });
+  function darLike(button) {
+  const contador = button.querySelector("small");
+  let total = Number(contador.textContent);
+
+  if (button.dataset.liked === "true") {
+    button.dataset.liked = "false";
+    button.firstChild.textContent = "♡ ";
+    button.style.color = "white";
+    contador.textContent = total - 1;
+  } else {
+    button.dataset.liked = "true";
+    button.firstChild.textContent = "♥ ";
+    button.style.color = "#ff2d55";
+    contador.textContent = total + 1;
+  }
+}
   </script>
 </body>
 </html>
