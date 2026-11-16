@@ -162,7 +162,7 @@ nav b {
   Tu navegador no puede reproducir este video.
     </video>
     <div class="actions">
-      <button class="like-btn" onclick="darLike(this)">
+      <button class="like-btn" data-post-id="video1" onclick="darLike(this)">
   ♡ <small>0</small>
       </button>
       <span>▢<small>0</small></span>
@@ -180,7 +180,7 @@ nav b {
       Tu navegador no puede reproducir este video.
     </video>
     <div class="actions">
-      <button class="like-btn" onclick="darLike(this)">
+      <button class="like-btn" data-post-id="Video2" onclick="darLike(this)">
   ♡ <small>0</small>
       </button>
       <span>▢<small>0</small></span>
@@ -195,7 +195,7 @@ nav b {
   <section class="post">
     
     <div class="actions">
-      <button class="like-btn" onclick="darLike(this)">
+      <button class="like-btn" data-post-id="video3" onclick="darLike(this)">
   ♡ <small>0</small>
       </button>
       <span>▢<small>0</small></span>
@@ -216,7 +216,7 @@ nav b {
   <span><b>♡</b>Actividad</span>
   <span><b>♙</b>Perfil</span>
 </nav>
-<script>
+<script type="module">
 const videos = document.querySelectorAll(".video-real");
 
 const observer = new IntersectionObserver((entries) => {
