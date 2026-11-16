@@ -56,6 +56,7 @@ header {
   scroll-snap-align: start;
   background: linear-gradient(160deg, #202b3b, #090909);
 }
+
 .video-real {
   width: 100%;
   height: 100%;
@@ -64,7 +65,8 @@ header {
   top: 0;
   left: 0;
   background: #000;
-  }
+}
+
 .post:nth-child(2) {
   background: linear-gradient(160deg, #35203b, #090909);
 }
@@ -132,7 +134,8 @@ nav b {
   font-size: 21px;
   margin-bottom: 3px;
 }
-  .like-btn {
+
+.like-btn {
   background: none;
   border: none;
   color: white;
@@ -158,12 +161,12 @@ nav b {
 
   <section class="post">
     <video class="video-real" autoplay muted playsinline loop>
-  <source src="20261002_153916_001.mp4" type="video/mp4">
-  Tu navegador no puede reproducir este video.
+      <source src="20261002_153916_001.mp4" type="video/mp4">
+      Tu navegador no puede reproducir este video.
     </video>
     <div class="actions">
       <button class="like-btn" data-post-id="video1" onclick="darLike(this)">
-  ♡ <small>0</small>
+        ♡ <small>0</small>
       </button>
       <span>▢<small>0</small></span>
       <span>↗<small>Compartir</small></span>
@@ -181,7 +184,7 @@ nav b {
     </video>
     <div class="actions">
       <button class="like-btn" data-post-id="Video2" onclick="darLike(this)">
-  ♡ <small>0</small>
+        ♡ <small>0</small>
       </button>
       <span>▢<small>0</small></span>
       <span>↗<small>Compartir</small></span>
@@ -193,10 +196,9 @@ nav b {
   </section>
 
   <section class="post">
-    
     <div class="actions">
       <button class="like-btn" data-post-id="video3" onclick="darLike(this)">
-  ♡ <small>0</small>
+        ♡ <small>0</small>
       </button>
       <span>▢<small>0</small></span>
       <span>↗<small>Compartir</small></span>
@@ -216,7 +218,40 @@ nav b {
   <span><b>♡</b>Actividad</span>
   <span><b>♙</b>Perfil</span>
 </nav>
+
 <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  deleteDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "nexora-c7a6f.firebaseapp.com",
+  projectId: "nexora-c7a6f",
+  storageBucket: "nexora-c7a6f.firebasestorage.app",
+  messagingSenderId: "322230049221",
+  appId: "1:322230049221:web:c54317e2aafd0a620053ac"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+// Reproducción de videos
+
 const videos = document.querySelectorAll(".video-real");
 
 const observer = new IntersectionObserver((entries) => {
@@ -236,22 +271,121 @@ const observer = new IntersectionObserver((entries) => {
 videos.forEach((video) => {
   observer.observe(video);
 });
-  function darLike(button) {
-  const contador = button.querySelector("small");
-  let total = Number(contador.textContent);
 
-  if (button.dataset.liked === "true") {
-    button.dataset.liked = "false";
-    button.firstChild.textContent = "♡ ";
-    button.style.color = "white";
-    contador.textContent = total - 1;
-  } else {
-    button.dataset.liked = "true";
-    button.firstChild.textContent = "♥ ";
-    button.style.color = "#ff2d55";
-    contador.textContent = total + 1;
+
+// Sistema de Me gusta con Firebase
+
+const botones = document.querySelectorAll(".like-btn");
+
+botones.forEach((button) => {
+  button.disabled = true;
+});
+
+let usuarioActual = null;
+
+async function darLike(button) {
+
+  if (!usuarioActual || button.disabled) {
+    return;
+  }
+
+  const postId = button.dataset.postId;
+  const userId = usuarioActual.uid;
+
+  const referencia = doc(
+    db,
+    "publicaciones",
+    postId,
+    "likes",
+    userId
+  );
+
+  button.disabled = true;
+
+  try {
+
+    if (button.dataset.liked === "true") {
+
+      await deleteDoc(referencia);
+
+    } else {
+
+      await setDoc(referencia, {
+        uid: userId,
+        createdAt: serverTimestamp()
+      });
+
+    }
+
+  } catch (error) {
+
+    console.error("Error al guardar Me gusta:", error);
+    alert("No se pudo guardar el Me gusta. Inténtalo de nuevo.");
+
+  } finally {
+
+    button.disabled = false;
+
   }
 }
-  </script>
+
+window.darLike = darLike;
+
+
+// Comprobar sesión y escuchar los Me gusta
+
+onAuthStateChanged(auth, (user) => {
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  usuarioActual = user;
+
+  botones.forEach((button) => {
+
+    const postId = button.dataset.postId;
+
+    const likesRef = collection(
+      db,
+      "publicaciones",
+      postId,
+      "likes"
+    );
+
+    onSnapshot(likesRef, (snapshot) => {
+
+      const total = snapshot.size;
+
+      const miLike = snapshot.docs.some(
+        (documento) => documento.id === user.uid
+      );
+
+      button.dataset.liked = miLike ? "true" : "false";
+
+      const contador = button.querySelector("small");
+
+      contador.textContent = total;
+
+      button.firstChild.textContent = miLike ? "♥ " : "♡ ";
+
+      button.style.color = miLike ? "#ff2d55" : "white";
+
+      button.disabled = false;
+
+    }, (error) => {
+
+      console.error("Error al leer Me gusta:", error);
+      button.disabled = true;
+
+    });
+
+  });
+
+});
+
+</script>
+
 </body>
 </html>
