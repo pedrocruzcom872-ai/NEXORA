@@ -253,15 +253,26 @@ const db = getFirestore(app);
 // Reproducción de videos
 
 const videos = document.querySelectorAll(".video-real");
-
+videos.forEach((video) => {
+  video.addEventListener("click", () => {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  });
+});
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     const video = entry.target;
 
     if (entry.isIntersecting) {
-      video.play().catch(() => {});
+      if (video.dataset.paused !== "true") {
+        video.play().catch(() => {});
+      }
     } else {
       video.pause();
+      video.dataset.paused = "false";
     }
   });
 }, {
