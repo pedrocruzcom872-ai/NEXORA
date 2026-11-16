@@ -103,7 +103,12 @@
       </button>
     </form>
 
-    <p id="mensaje" role="status" aria-live="polite"></p>
+<button id="botonGoogle" type="button"
+  style="background:#ffffff; color:#222;">
+  Continuar con Google
+</button>
+
+<p id="mensaje" role="status" aria-live="polite"></p>
 
     <p>¿No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
   </div>
@@ -113,9 +118,12 @@
       from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
     import {
-      getAuth,
-      signInWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  getRedirectResult
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyAbLF8HxEFCGkn00Mzn_Q3JOPOc2lSkk7Y",
@@ -128,11 +136,24 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
+const proveedorGoogle = new GoogleAuthProvider();
+    
+    getRedirectResult(auth)
+  .then((resultado) => {
+    if (resultado && resultado.user) {
+      window.location.href = "inicio.html";
+    }
+  })
+  .catch((error) => {
+    console.error("Error de Google:", error);
+    mensaje.textContent = "Error de Google: " + error.code;
+  });
+    
     const formulario = document.getElementById("loginForm");
     const mensaje = document.getElementById("mensaje");
     const boton = document.getElementById("botonLogin");
-
+const botonGoogle = document.getElementById("botonGoogle");
+    
     formulario.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -166,6 +187,18 @@ mensaje.textContent = "Error: " + error.code;
       } finally {
         boton.disabled = false;
         boton.textContent = "Iniciar sesión";
+      }
+    });
+        botonGoogle.addEventListener("click", async () => {
+      botonGoogle.disabled = true;
+      mensaje.textContent = "Conectando con Google...";
+
+      try {
+        await signInWithRedirect(auth, proveedorGoogle);
+      } catch (error) {
+        console.error(error);
+        mensaje.textContent = "Error: " + error.code;
+        botonGoogle.disabled = false;
       }
     });
   </script>
