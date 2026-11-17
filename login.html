@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -103,12 +102,15 @@
       </button>
     </form>
 
-<button id="botonGoogle" type="button"
-  style="background:#ffffff; color:#222;">
-  Continuar con Google
-</button>
+    <button
+      id="botonGoogle"
+      type="button"
+      style="background:#ffffff; color:#222;"
+    >
+      Continuar con Google
+    </button>
 
-<p id="mensaje" role="status" aria-live="polite"></p>
+    <p id="mensaje" role="status" aria-live="polite"></p>
 
     <p>¿No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
   </div>
@@ -118,16 +120,18 @@
       from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
     import {
-  getAuth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+      getAuth,
+      onAuthStateChanged,
+      signInWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithRedirect,
+      getRedirectResult,
+      setPersistence,
+      browserLocalPersistence
+    } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyAbLF8HxEFCGkn00Mzn_Q3JOPOc2lSkk7Y",
+      apiKey: "AIzaSyAbLF8HxEFCGkn00Mzn_Q3JOPOc2lSkk7a",
       authDomain: "nexora-c7a6f.firebaseapp.com",
       projectId: "nexora-c7a6f",
       storageBucket: "nexora-c7a6f.firebasestorage.app",
@@ -136,35 +140,52 @@
     };
 
     const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+    const auth = getAuth(app);
+
+    auth.languageCode = "es";
+
+    const proveedorGoogle = new GoogleAuthProvider();
+
+    const formulario = document.getElementById("loginForm");
+    const mensaje = document.getElementById("mensaje");
+    const boton = document.getElementById("botonLogin");
+    const botonGoogle = document.getElementById("botonGoogle");
+
+    let comprobandoRedireccion = true;
+
+    // Comprobar el resultado del acceso con Google
+    const resultadoGoogle = getRedirectResult(auth)
+      .then((resultado) => {
+        if (resultado && resultado.user) {
+          mensaje.textContent = "Google conectado correctamente.";
+          window.location.replace("inicio.html");
+        } else {
+          mensaje.textContent =
+            "Google regresó sin completar el acceso. Inténtalo otra vez.";
+        }
+      })
+      .catch((error) => {
+        console.error("Error de Google:", error);
+
+        mensaje.textContent =
+          "Error de Google: " + error.code;
+      })
+      .finally(() => {
+        comprobandoRedireccion = false;
+
+        if (auth.currentUser) {
+          window.location.replace("inicio.html");
+        }
+      });
+
+    // Detectar si ya existe una sesión iniciada
     onAuthStateChanged(auth, (usuario) => {
-  if (usuario) {
-    window.location.href = "inicio.html";
-  }
-});
+      if (usuario && !comprobandoRedireccion) {
+        window.location.replace("inicio.html");
+      }
+    });
 
-const proveedorGoogle = new GoogleAuthProvider();
-
-const formulario = document.getElementById("loginForm");
-const mensaje = document.getElementById("mensaje");
-const boton = document.getElementById("botonLogin");
-const botonGoogle = document.getElementById("botonGoogle");
-    
-    getRedirectResult(auth)
-  .then((resultado) => {
-    if (resultado && resultado.user) {
-      mensaje.textContent = "Google conectado correctamente.";
-      window.location.href = "inicio.html";
-    } else {
-      console.log("No se recibió resultado de Google.");
-    }
-  })
-  .catch((error) => {
-    console.error("Error de Google:", error);
-    mensaje.textContent = "Error de Google: " + error.code;
-  });
-    
-    
+    // Inicio de sesión con correo y contraseña
     formulario.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -178,9 +199,11 @@ const botonGoogle = document.getElementById("botonGoogle");
       try {
         await signInWithEmailAndPassword(auth, correo, password);
 
-        window.location.href = "inicio.html";
+        window.location.replace("inicio.html");
 
       } catch (error) {
+        console.error("Error Firebase:", error);
+
         const errores = {
           "auth/invalid-credential":
             "Correo o contraseña incorrectos.",
@@ -192,23 +215,30 @@ const botonGoogle = document.getElementById("botonGoogle");
             "Error de conexión. Inténtalo de nuevo."
         };
 
-        console.error("Error Firebase:", error.code, error.message);
-mensaje.textContent = "Error: " + error.code;
+        mensaje.textContent =
+          errores[error.code] || "Error: " + error.code;
 
       } finally {
         boton.disabled = false;
         boton.textContent = "Iniciar sesión";
       }
     });
-        botonGoogle.addEventListener("click", async () => {
+
+    // Inicio de sesión con Google
+    botonGoogle.addEventListener("click", async () => {
       botonGoogle.disabled = true;
       mensaje.textContent = "Conectando con Google...";
 
       try {
+        await setPersistence(auth, browserLocalPersistence);
         await signInWithRedirect(auth, proveedorGoogle);
+
       } catch (error) {
-        console.error(error);
-        mensaje.textContent = "Error: " + error.code;
+        console.error("Error al iniciar con Google:", error);
+
+        mensaje.textContent =
+          "Error de Google: " + error.code;
+
         botonGoogle.disabled = false;
       }
     });
