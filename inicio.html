@@ -75,14 +75,6 @@ header {
   background: linear-gradient(160deg, #183c35, #090909);
 }
 
-.video-text {
-  position: absolute;
-  top: 45%;
-  width: 100%;
-  text-align: center;
-  color: #aaa;
-}
-
 .actions {
   position: absolute;
   right: 15px;
@@ -98,6 +90,7 @@ header {
 }
 
 .actions small {
+  display: block;
   font-size: 12px;
 }
 
@@ -124,9 +117,13 @@ nav {
   z-index: 5;
 }
 
-nav span {
+nav button {
+  background: none;
+  border: none;
+  color: white;
   font-size: 12px;
   text-align: center;
+  cursor: pointer;
 }
 
 nav b {
@@ -147,6 +144,71 @@ nav b {
   display: block;
   font-size: 12px;
 }
+
+/* Panel de perfil */
+
+.profile-panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: #000;
+  padding: 25px 20px;
+}
+
+.profile-panel.visible {
+  display: block;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.profile-header h2 {
+  color: #00e5ff;
+}
+
+.close-profile {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+}
+
+.profile-avatar {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  background: #172b35;
+  border: 2px solid #00e5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 35px;
+  margin-bottom: 15px;
+}
+
+.profile-email {
+  color: #aaa;
+  margin-top: 10px;
+  overflow-wrap: anywhere;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 35px;
+  background: #191919;
+  border: 1px solid #ff4545;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -164,6 +226,7 @@ nav b {
       <source src="20261002_153916_001.mp4" type="video/mp4">
       Tu navegador no puede reproducir este video.
     </video>
+
     <div class="actions">
       <button class="like-btn" data-post-id="video1" onclick="darLike(this)">
         ♡ <small>0</small>
@@ -171,6 +234,7 @@ nav b {
       <span>▢<small>0</small></span>
       <span>↗<small>Compartir</small></span>
     </div>
+
     <div class="info">
       <strong>@nexora</strong>
       <p>Bienvenido a NEXORA 🚀</p>
@@ -182,6 +246,7 @@ nav b {
       <source src="20261002_155338_001.mp4" type="video/mp4">
       Tu navegador no puede reproducir este video.
     </video>
+
     <div class="actions">
       <button class="like-btn" data-post-id="Video2" onclick="darLike(this)">
         ♡ <small>0</small>
@@ -189,6 +254,7 @@ nav b {
       <span>▢<small>0</small></span>
       <span>↗<small>Compartir</small></span>
     </div>
+
     <div class="info">
       <strong>@usuario</strong>
       <p>Una nueva publicación</p>
@@ -203,6 +269,7 @@ nav b {
       <span>▢<small>0</small></span>
       <span>↗<small>Compartir</small></span>
     </div>
+
     <div class="info">
       <strong>@usuario</strong>
       <p>Descubre NEXORA</p>
@@ -212,18 +279,46 @@ nav b {
 </main>
 
 <nav>
-  <span><b>⌂</b>Inicio</span>
-  <span><b>⌕</b>Buscar</span>
-  <span><b>＋</b>Crear</span>
-  <span><b>♡</b>Actividad</span>
-  <span><b>♙</b>Perfil</span>
+  <button onclick="irInicio()"><b>⌂</b>Inicio</button>
+  <button onclick="proximamente()"><b>⌕</b>Buscar</button>
+  <button onclick="proximamente()"><b>＋</b>Crear</button>
+  <button onclick="proximamente()"><b>♡</b>Actividad</button>
+  <button onclick="abrirPerfil()"><b>♙</b>Perfil</button>
 </nav>
+
+<!-- Panel de perfil -->
+
+<section class="profile-panel" id="profilePanel">
+
+  <div class="profile-header">
+    <h2>Mi perfil</h2>
+    <button class="close-profile" onclick="cerrarPerfil()">×</button>
+  </div>
+
+  <div class="profile-avatar">♙</div>
+
+  <h2>Mi cuenta NEXORA</h2>
+  <p class="profile-email" id="correoUsuario">
+    Cargando cuenta...
+  </p>
+
+  <button class="logout-btn" id="logoutBtn">
+    Cerrar sesión
+  </button>
+
+</section>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
 import {
   getFirestore,
@@ -253,6 +348,7 @@ const db = getFirestore(app);
 // Reproducción de videos
 
 const videos = document.querySelectorAll(".video-real");
+
 videos.forEach((video) => {
   video.addEventListener("click", () => {
     if (video.paused) {
@@ -262,6 +358,7 @@ videos.forEach((video) => {
     }
   });
 });
+
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
     const video = entry.target;
@@ -354,6 +451,9 @@ onAuthStateChanged(auth, (user) => {
 
   usuarioActual = user;
 
+  document.getElementById("correoUsuario").textContent =
+    user.email || "Cuenta de Google";
+
   botones.forEach((button) => {
 
     const postId = button.dataset.postId;
@@ -395,6 +495,60 @@ onAuthStateChanged(auth, (user) => {
   });
 
 });
+
+
+// Abrir y cerrar perfil
+
+window.abrirPerfil = function() {
+  document.getElementById("profilePanel").classList.add("visible");
+};
+
+window.cerrarPerfil = function() {
+  document.getElementById("profilePanel").classList.remove("visible");
+};
+
+
+// Volver al inicio
+
+window.irInicio = function() {
+  document.getElementById("profilePanel").classList.remove("visible");
+  document.querySelector(".feed").scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+};
+
+
+// Cerrar sesión
+
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+
+  const confirmar = confirm("¿Seguro que quieres cerrar sesión?");
+
+  if (!confirmar) {
+    return;
+  }
+
+  try {
+
+    await signOut(auth);
+    window.location.href = "login.html";
+
+  } catch (error) {
+
+    console.error("Error al cerrar sesión:", error);
+    alert("No se pudo cerrar la sesión. Inténtalo de nuevo.");
+
+  }
+
+});
+
+
+// Funciones que todavía están en desarrollo
+
+window.proximamente = function() {
+  alert("Esta función de NEXORA todavía está en desarrollo.");
+};
 
 </script>
 
