@@ -135,8 +135,14 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+const auth = getAuth(app);
+
 const proveedorGoogle = new GoogleAuthProvider();
+
+const formulario = document.getElementById("loginForm");
+const mensaje = document.getElementById("mensaje");
+const boton = document.getElementById("botonLogin");
+const botonGoogle = document.getElementById("botonGoogle");
     
     getRedirectResult(auth)
   .then((resultado) => {
@@ -149,10 +155,6 @@ const proveedorGoogle = new GoogleAuthProvider();
     mensaje.textContent = "Error de Google: " + error.code;
   });
     
-    const formulario = document.getElementById("loginForm");
-    const mensaje = document.getElementById("mensaje");
-    const boton = document.getElementById("botonLogin");
-const botonGoogle = document.getElementById("botonGoogle");
     
     formulario.addEventListener("submit", async (e) => {
       e.preventDefault();
