@@ -119,6 +119,7 @@
 
     import {
   getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithRedirect,
@@ -136,6 +137,11 @@
 
     const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+    onAuthStateChanged(auth, (usuario) => {
+  if (usuario) {
+    window.location.href = "inicio.html";
+  }
+});
 
 const proveedorGoogle = new GoogleAuthProvider();
 
