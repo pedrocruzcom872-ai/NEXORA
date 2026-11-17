@@ -147,7 +147,10 @@ const botonGoogle = document.getElementById("botonGoogle");
     getRedirectResult(auth)
   .then((resultado) => {
     if (resultado && resultado.user) {
+      mensaje.textContent = "Google conectado correctamente.";
       window.location.href = "inicio.html";
+    } else {
+      console.log("No se recibió resultado de Google.");
     }
   })
   .catch((error) => {
