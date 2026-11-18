@@ -457,7 +457,7 @@ guardarPerfil.addEventListener("click", async () => {
 
   } catch (error) {
     console.error("Error al guardar perfil:", error);
-    alert("No se pudo guardar el perfil.");
+    alert(error.code + ": " + error.message);
 
   } finally {
     guardarPerfil.disabled = false;
