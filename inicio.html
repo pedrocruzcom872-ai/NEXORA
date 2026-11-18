@@ -297,10 +297,15 @@ nav b {
 
   <div class="profile-avatar">♙</div>
 
-  <h2>Mi cuenta NEXORA</h2>
-  <p class="profile-email" id="correoUsuario">
-    Cargando cuenta...
-  </p>
+  <h2 id="nombrePerfil">@pedro</h2>
+
+<p id="biografiaPerfil">
+  Mi cuenta de NEXORA 🚀
+</p>
+
+<p class="profile-email" id="correoUsuario">
+  Cargando cuenta...
+</p>
 
   <button class="logout-btn" id="logoutBtn">
     Cerrar sesión
@@ -322,6 +327,7 @@ import {
 
 import {
   getFirestore,
+  getDoc,
   collection,
   doc,
   onSnapshot,
@@ -343,6 +349,35 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+  // Cargar perfil desde Firestore
+
+async function cargarPerfil(user) {
+
+  const perfilRef = doc(db, "usuarios", user.uid);
+
+  try {
+
+    const perfilSnap = await getDoc(perfilRef);
+
+    if (perfilSnap.exists()) {
+
+      const datos = perfilSnap.data();
+
+      document.getElementById("nombrePerfil").textContent =
+        "@" + datos.nombreUsuario;
+
+      document.getElementById("biografiaPerfil").textContent =
+        datos.biografia;
+
+    }
+
+  } catch (error) {
+
+    console.error("Error al cargar perfil:", error);
+
+  }
+
+}
 
 
 // Reproducción de videos
@@ -453,6 +488,8 @@ onAuthStateChanged(auth, (user) => {
 
   document.getElementById("correoUsuario").textContent =
     user.email || "Cuenta de Google";
+
+  cargarPerfil(user);
 
   botones.forEach((button) => {
 
