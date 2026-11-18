@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,7 +8,9 @@
   <title>Iniciar sesión - NEXORA</title>
 
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -76,6 +79,7 @@
 </head>
 
 <body>
+
   <div class="card">
     <h1>NEXORA</h1>
     <p>Inicia sesión para continuar</p>
@@ -112,10 +116,14 @@
 
     <p id="mensaje" role="status" aria-live="polite"></p>
 
-    <p>¿No tienes cuenta? <a href="registro.html">Crear cuenta</a></p>
+    <p>
+      ¿No tienes cuenta?
+      <a href="registro.html">Crear cuenta</a>
+    </p>
   </div>
 
   <script type="module">
+
     import { initializeApp }
       from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
@@ -124,11 +132,11 @@
       onAuthStateChanged,
       signInWithEmailAndPassword,
       GoogleAuthProvider,
-      signInWithRedirect,
-      getRedirectResult,
-      setPersistence,
-      browserLocalPersistence
+      signInWithPopup
     } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
+
+    // CONFIGURACIÓN FIREBASE
 
     const firebaseConfig = {
       apiKey: "AIzaSyAbLF8HxEFCGkn00Mzn_Q3JOPOc2lSkk7Y",
@@ -139,53 +147,43 @@
       appId: "1:322230049221:web:c54317e2aafd0a620053ac"
     };
 
+
+    // INICIALIZAR FIREBASE
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
     auth.languageCode = "es";
 
+
+    // PROVEEDOR GOOGLE
+
     const proveedorGoogle = new GoogleAuthProvider();
+
+    proveedorGoogle.setCustomParameters({
+      prompt: "select_account"
+    });
+
+
+    // ELEMENTOS
 
     const formulario = document.getElementById("loginForm");
     const mensaje = document.getElementById("mensaje");
     const boton = document.getElementById("botonLogin");
     const botonGoogle = document.getElementById("botonGoogle");
 
-    let comprobandoRedireccion = true;
 
-    // Comprobar el resultado del acceso con Google
-    const resultadoGoogle = getRedirectResult(auth)
-      .then((resultado) => {
-        if (resultado && resultado.user) {
-          mensaje.textContent = "Google conectado correctamente.";
-          window.location.replace("inicio.html");
-        } else {
-          mensaje.textContent =
-            "Google regresó sin completar el acceso. Inténtalo otra vez.";
-        }
-      })
-      .catch((error) => {
-        console.error("Error de Google:", error);
+    // DETECTAR SESIÓN ACTIVA
 
-        mensaje.textContent =
-          "Error de Google: " + error.code;
-      })
-      .finally(() => {
-        comprobandoRedireccion = false;
-
-        if (auth.currentUser) {
-          window.location.replace("inicio.html");
-        }
-      });
-
-    // Detectar si ya existe una sesión iniciada
     onAuthStateChanged(auth, (usuario) => {
-      if (usuario && !comprobandoRedireccion) {
+      if (usuario) {
         window.location.replace("inicio.html");
       }
     });
 
-    // Inicio de sesión con correo y contraseña
+
+    // INICIO CON CORREO Y CONTRASEÑA
+
     formulario.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -197,20 +195,29 @@
       mensaje.textContent = "";
 
       try {
-        await signInWithEmailAndPassword(auth, correo, password);
+
+        await signInWithEmailAndPassword(
+          auth,
+          correo,
+          password
+        );
 
         window.location.replace("inicio.html");
 
       } catch (error) {
+
         console.error("Error Firebase:", error);
 
         const errores = {
           "auth/invalid-credential":
             "Correo o contraseña incorrectos.",
+
           "auth/invalid-email":
             "El correo electrónico no es válido.",
+
           "auth/too-many-requests":
             "Demasiados intentos. Inténtalo más tarde.",
+
           "auth/network-request-failed":
             "Error de conexión. Inténtalo de nuevo."
         };
@@ -219,29 +226,65 @@
           errores[error.code] || "Error: " + error.code;
 
       } finally {
+
         boton.disabled = false;
         boton.textContent = "Iniciar sesión";
+
       }
     });
 
-    // Inicio de sesión con Google
+
+    // INICIO CON GOOGLE
+
     botonGoogle.addEventListener("click", async () => {
+
       botonGoogle.disabled = true;
       mensaje.textContent = "Conectando con Google...";
 
       try {
-        await setPersistence(auth, browserLocalPersistence);
-        await signInWithRedirect(auth, proveedorGoogle);
+
+        const resultado = await signInWithPopup(
+          auth,
+          proveedorGoogle
+        );
+
+        if (resultado.user) {
+          mensaje.textContent = "Google conectado correctamente.";
+
+          window.location.replace("inicio.html");
+        }
 
       } catch (error) {
+
         console.error("Error al iniciar con Google:", error);
 
+        const erroresGoogle = {
+          "auth/popup-blocked":
+            "El navegador bloqueó la ventana de Google.",
+
+          "auth/popup-closed-by-user":
+            "Cerraste la ventana de Google antes de terminar.",
+
+          "auth/unauthorized-domain":
+            "Este dominio no está autorizado en Firebase.",
+
+          "auth/account-exists-with-different-credential":
+            "Esta cuenta ya está registrada con otro método.",
+
+          "auth/network-request-failed":
+            "Error de conexión. Inténtalo nuevamente."
+        };
+
         mensaje.textContent =
-          "Error de Google: " + error.code;
+          erroresGoogle[error.code] || "Error de Google: " + error.code;
 
         botonGoogle.disabled = false;
+
       }
+
     });
+
   </script>
+
 </body>
 </html>
