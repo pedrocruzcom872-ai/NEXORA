@@ -247,6 +247,9 @@
           auth,
           proveedorGoogle
         );
+        
+        console.log("USUARIO GOOGLE:", resultado.user.email);
+console.log("UID GOOGLE:", resultado.user.uid);
 
         if (resultado.user) {
           mensaje.textContent = "Google conectado correctamente.";
