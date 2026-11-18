@@ -407,6 +407,62 @@ async function cargarPerfil(user) {
   }
 
 }
+  
+const botonEditarPerfil = document.getElementById("botonEditarPerfil");
+const formularioEditarPerfil = document.getElementById("formularioEditarPerfil");
+const nuevoNombreUsuario = document.getElementById("nuevoNombreUsuario");
+const nuevaBiografia = document.getElementById("nuevaBiografia");
+const guardarPerfil = document.getElementById("guardarPerfil");
+const cancelarEdicion = document.getElementById("cancelarEdicion");
+
+botonEditarPerfil.addEventListener("click", () => {
+  nuevoNombreUsuario.value =
+    document.getElementById("nombrePerfil").textContent.replace(/^@/, "");
+
+  nuevaBiografia.value =
+    document.getElementById("biografiaPerfil").textContent;
+
+  formularioEditarPerfil.style.display = "block";
+});
+
+cancelarEdicion.addEventListener("click", () => {
+  formularioEditarPerfil.style.display = "none";
+});
+
+guardarPerfil.addEventListener("click", async () => {
+  if (!usuarioActual) return;
+
+  const nombre = nuevoNombreUsuario.value.trim().replace(/^@/, "");
+  const bio = nuevaBiografia.value.trim();
+
+  if (!nombre) {
+    alert("Escribe un nombre de usuario.");
+    return;
+  }
+
+  guardarPerfil.disabled = true;
+
+  try {
+    await setDoc(doc(db, "usuarios", usuarioActual.uid), {
+      nombreUsuario: nombre,
+      biografia: bio
+    }, { merge: true });
+
+    document.getElementById("nombrePerfil").textContent = "@" + nombre;
+    document.getElementById("biografiaPerfil").textContent = bio;
+
+    formularioEditarPerfil.style.display = "none";
+    alert("¡Perfil actualizado correctamente!");
+
+  } catch (error) {
+    console.error("Error al guardar perfil:", error);
+    alert("No se pudo guardar el perfil.");
+
+  } finally {
+    guardarPerfil.disabled = false;
+  }
+});
+
 
 
 // Reproducción de videos
