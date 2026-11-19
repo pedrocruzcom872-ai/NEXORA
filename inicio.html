@@ -282,6 +282,66 @@ nav b {
   border-radius: 20px;
   padding: 10px 15px;
 }
+  
+/* Diseño de comentarios NEXORA */
+
+#listaComentarios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 0 20px;
+}
+
+#listaComentarios p {
+  background: #18232d;
+  border: 1px solid #263642;
+  border-radius: 15px;
+  padding: 14px;
+  margin: 0;
+  color: white;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+#listaComentarios p::before {
+  content: "♙";
+  float: left;
+  width: 38px;
+  height: 38px;
+  margin-right: 12px;
+  border-radius: 50%;
+  background: #263d4b;
+  color: #00e5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+#listaComentarios strong {
+  display: block;
+  color: #00e5ff;
+  margin-bottom: 4px;
+}
+
+#listaComentarios span {
+  display: block;
+  color: #eeeeee;
+}
+
+.comment-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 27px;
+  cursor: pointer;
+}
+
+.comment-btn small {
+  display: block;
+  font-size: 12px;
+}
+
 </style>
 </head>
 
