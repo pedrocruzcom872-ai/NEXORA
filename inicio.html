@@ -483,7 +483,10 @@ import {
   onSnapshot,
   setDoc,
   deleteDoc,
-  serverTimestamp
+  serverTimestamp,
+  addDoc,
+  query,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
 
@@ -632,6 +635,116 @@ botones.forEach((button) => {
 });
 
 let usuarioActual = null;
+  
+let publicacionActual = null;
+let detenerComentarios = null;
+
+window.abrirComentarios = function(postId) {
+  publicacionActual = postId;
+
+  const panel = document.getElementById("panelComentarios");
+  const lista = document.getElementById("listaComentarios");
+
+  panel.classList.add("visible");
+  lista.innerHTML = "<p>Cargando comentarios...</p>";
+
+  if (detenerComentarios) detenerComentarios();
+
+  const comentariosRef = collection(
+    db, "publicaciones", postId, "comentarios"
+  );
+
+  const consulta = query(comentariosRef, orderBy("createdAt", "asc"));
+
+  detenerComentarios = onSnapshot(consulta, (snapshot) => {
+    lista.innerHTML = "";
+
+    const boton = [...document.querySelectorAll(".comment-btn")]
+      .find(b => b.getAttribute("onclick") ===
+        "abrirComentarios('" + postId + "')");
+
+    if (boton) {
+      boton.querySelector("small").textContent = snapshot.size;
+    }
+
+    if (snapshot.empty) {
+      lista.innerHTML = "<p>Todavía no hay comentarios.</p>";
+      return;
+    }
+
+    snapshot.forEach((documento) => {
+      const comentario = documento.data();
+      const elemento = document.createElement("p");
+      const nombre = document.createElement("strong");
+      const texto = document.createElement("span");
+
+      nombre.textContent = "@" +
+        (comentario.nombreUsuario || "usuario") + ": ";
+      texto.textContent = comentario.texto;
+
+      elemento.append(nombre, texto);
+      elemento.style.marginBottom = "15px";
+      lista.appendChild(elemento);
+    });
+  }, (error) => {
+    console.error("Error al cargar comentarios:", error);
+    lista.textContent = "No se pudieron cargar los comentarios.";
+  });
+};
+
+window.cerrarComentarios = function() {
+  document.getElementById("panelComentarios").classList.remove("visible");
+
+  if (detenerComentarios) {
+    detenerComentarios();
+    detenerComentarios = null;
+  }
+};
+
+window.enviarComentario = async function() {
+  if (!usuarioActual || !publicacionActual) {
+    alert("Inicia sesión para comentar.");
+    return;
+  }
+
+  const campo = document.getElementById("textoComentario");
+  const texto = campo.value.trim();
+
+  if (!texto) {
+    alert("Escribe un comentario.");
+    return;
+  }
+
+  if (texto.length > 300) {
+    alert("El comentario no puede superar 300 caracteres.");
+    return;
+  }
+
+  try {
+    const perfil = await getDoc(doc(db, "usuarios", usuarioActual.uid));
+
+    const nombreUsuario = perfil.exists()
+      ? perfil.data().nombreUsuario
+      : "usuario";
+
+    await addDoc(
+      collection(db, "publicaciones", publicacionActual, "comentarios"),
+      {
+        uid: usuarioActual.uid,
+        nombreUsuario: nombreUsuario,
+        texto: texto,
+        createdAt: serverTimestamp()
+      }
+    );
+
+    campo.value = "";
+
+  } catch (error) {
+    console.error("Error al enviar comentario:", error);
+    alert("No se pudo enviar el comentario. Inténtalo de nuevo.");
+  }
+};
+
 
 async function darLike(button) {
 
