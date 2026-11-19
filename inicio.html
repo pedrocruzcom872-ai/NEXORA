@@ -179,8 +179,8 @@ nav b {
 }
 
 .profile-avatar {
-  width: 85px;
-  height: 85px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background: #172b35;
   border: 2px solid #00e5ff;
@@ -189,6 +189,21 @@ nav b {
   justify-content: center;
   font-size: 35px;
   margin-bottom: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+#iconoFotoPerfil {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .profile-email {
@@ -295,7 +310,24 @@ nav b {
     <button class="close-profile" onclick="cerrarPerfil()">×</button>
   </div>
 
-  <div class="profile-avatar">♙</div>
+  <div class="profile-avatar" id="contenedorFotoPerfil">
+
+  <img id="fotoPerfil" src="" style="display:none;">
+
+  <span id="iconoFotoPerfil">♙</span>
+
+</div>
+
+<button onclick="document.getElementById('selectorFotoPerfil').click()">
+  📷 Cambiar foto
+</button>
+
+<input
+  type="file"
+  id="selectorFotoPerfil"
+  accept="image/*"
+  style="display:none;"
+>
 
   <h2 id="nombrePerfil">@pedro</h2>
 
@@ -625,10 +657,54 @@ onAuthStateChanged(auth, (user) => {
 window.abrirPerfil = function() {
   document.getElementById("profilePanel").classList.add("visible");
 };
+  // Cambiar foto de perfil
+
+const selectorFoto = document.getElementById("selectorFotoPerfil");
+const fotoPerfil = document.getElementById("fotoPerfil");
+const iconoFoto = document.getElementById("iconoFotoPerfil");
+
+selectorFoto.addEventListener("change", function() {
+
+  const archivo = selectorFoto.files[0];
+
+  if (!archivo) return;
+
+  if (!archivo.type.startsWith("image/")) {
+    alert("Selecciona una imagen válida.");
+    return;
+  }
+
+  const lector = new FileReader();
+
+  lector.onload = function() {
+
+    fotoPerfil.src = lector.result;
+    fotoPerfil.style.display = "block";
+    iconoFoto.style.display = "none";
+
+    localStorage.setItem(
+      "nexora_foto_perfil",
+      lector.result
+    );
+
+  };
+
+  lector.readAsDataURL(archivo);
+
+});
 
 window.cerrarPerfil = function() {
   document.getElementById("profilePanel").classList.remove("visible");
 };
+  // Cargar foto guardada
+
+const fotoGuardada = localStorage.getItem("nexora_foto_perfil");
+
+if (fotoGuardada) {
+  fotoPerfil.src = fotoGuardada;
+  fotoPerfil.style.display = "block";
+  iconoFoto.style.display = "none";
+}
 
 
 // Volver al inicio
