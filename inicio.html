@@ -223,7 +223,65 @@ nav b {
   font-size: 16px;
   cursor: pointer;
 }
+/* Panel de comentarios */
 
+.panel-comentarios {
+  display: none;
+  position: fixed;
+  bottom: 65px;
+  left: 0;
+  width: 100%;
+  height: 65%;
+  background: #101820;
+  color: white;
+  z-index: 999;
+  border-radius: 20px 20px 0 0;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.panel-comentarios.visible {
+  display: block;
+}
+
+.comentarios-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.comentarios-header button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+}
+
+.escribir-comentario {
+  display: flex;
+  gap: 8px;
+  position: sticky;
+  bottom: 0;
+  background: #101820;
+  padding-top: 10px;
+}
+
+.escribir-comentario input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+}
+
+.escribir-comentario button {
+  background: #00e5ff;
+  color: black;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 15px;
+}
 </style>
 </head>
 
@@ -246,7 +304,9 @@ nav b {
       <button class="like-btn" data-post-id="video1" onclick="darLike(this)">
         ♡ <small>0</small>
       </button>
-      <span>▢<small>0</small></span>
+      <button class="comment-btn" onclick="abrirComentarios('video1')">
+  💬 <small>0</small>
+      </button>
       <span>↗<small>Compartir</small></span>
     </div>
 
@@ -266,7 +326,9 @@ nav b {
       <button class="like-btn" data-post-id="Video2" onclick="darLike(this)">
         ♡ <small>0</small>
       </button>
-      <span>▢<small>0</small></span>
+      <button class="comment-btn" onclick="abrirComentarios('Video2')">
+  💬 <small>0</small>
+      </button>
       <span>↗<small>Compartir</small></span>
     </div>
 
@@ -281,7 +343,9 @@ nav b {
       <button class="like-btn" data-post-id="video3" onclick="darLike(this)">
         ♡ <small>0</small>
       </button>
-      <span>▢<small>0</small></span>
+    <button class="comment-btn" onclick="abrirComentarios('video3')">
+  💬 <small>0</small>
+    </button>
       <span>↗<small>Compartir</small></span>
     </div>
 
@@ -292,6 +356,31 @@ nav b {
   </section>
 
 </main>
+  <!-- Ventana de comentarios -->
+
+<div id="panelComentarios" class="panel-comentarios">
+
+  <div class="comentarios-header">
+    <h2>Comentarios</h2>
+    <button onclick="cerrarComentarios()">×</button>
+  </div>
+
+  <div id="listaComentarios">
+    <p>Todavía no hay comentarios.</p>
+  </div>
+
+  <div class="escribir-comentario">
+    <input
+      type="text"
+      id="textoComentario"
+      placeholder="Escribe un comentario..."
+      maxlength="300"
+    >
+
+    <button onclick="enviarComentario()">Enviar</button>
+  </div>
+
+</div>
 
 <nav>
   <button onclick="irInicio()"><b>⌂</b>Inicio</button>
