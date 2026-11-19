@@ -870,6 +870,7 @@ onAuthStateChanged(auth, (user) => {
     user.email || "Cuenta de Google";
 
   cargarPerfil(user);
+  cargarFotoPerfilNexora(user);
 
   botones.forEach((button) => {
 
@@ -919,13 +920,14 @@ onAuthStateChanged(auth, (user) => {
 window.abrirPerfil = function() {
   document.getElementById("profilePanel").classList.add("visible");
 };
-  // Cambiar foto de perfil
+  
+// Cambiar foto de perfil y guardarla en Firebase
 
 const selectorFoto = document.getElementById("selectorFotoPerfil");
 const fotoPerfil = document.getElementById("fotoPerfil");
 const iconoFoto = document.getElementById("iconoFotoPerfil");
 
-selectorFoto.addEventListener("change", function() {
+selectorFoto.addEventListener("change", async function() {
 
   const archivo = selectorFoto.files[0];
 
@@ -936,18 +938,73 @@ selectorFoto.addEventListener("change", function() {
     return;
   }
 
+  if (!usuarioActual) {
+    alert("Inicia sesión para cambiar tu foto.");
+    return;
+  }
+
+  const imagen = new Image();
   const lector = new FileReader();
 
   lector.onload = function() {
 
-    fotoPerfil.src = lector.result;
-    fotoPerfil.style.display = "block";
-    iconoFoto.style.display = "none";
+    imagen.onload = async function() {
 
-    localStorage.setItem(
-      "nexora_foto_perfil",
-      lector.result
-    );
+      const canvas = document.createElement("canvas");
+      const tamaño = 256;
+
+      canvas.width = tamaño;
+      canvas.height = tamaño;
+
+      const contexto = canvas.getContext("2d");
+
+      const escala = Math.min(
+        tamaño / imagen.width,
+        tamaño / imagen.height
+      );
+
+      const ancho = imagen.width * escala;
+      const alto = imagen.height * escala;
+
+      contexto.drawImage(
+        imagen,
+        (tamaño - ancho) / 2,
+        (tamaño - alto) / 2,
+        ancho,
+        alto
+      );
+
+      const fotoComprimida = canvas.toDataURL(
+        "image/jpeg",
+        0.65
+      );
+      if (fotoComprimida.length > 700000) {
+  alert("La imagen sigue siendo demasiado grande. Elige otra foto.");
+  return;
+      }
+
+      try {
+
+        await setDoc(
+          doc(db, "usuarios", usuarioActual.uid),
+          { fotoPerfil: fotoComprimida },
+          { merge: true }
+        );
+
+        fotoPerfil.src = fotoComprimida;
+        fotoPerfil.style.display = "block";
+        iconoFoto.style.display = "none";
+
+        alert("¡Foto de perfil guardada!");
+
+      } catch (error) {
+        console.error("Error al guardar foto:", error);
+        alert("No se pudo guardar la foto en Firebase.");
+      }
+
+    };
+
+    imagen.src = lector.result;
 
   };
 
@@ -955,18 +1012,35 @@ selectorFoto.addEventListener("change", function() {
 
 });
 
+// Cargar foto de perfil desde Firebase
+
+window.cargarFotoPerfilNexora = async function(usuario) {
+
+  if (!usuario) return;
+
+  try {
+
+    const perfil = await getDoc(
+      doc(db, "usuarios", usuario.uid)
+    );
+
+    if (perfil.exists() && perfil.data().fotoPerfil) {
+
+      fotoPerfil.src = perfil.data().fotoPerfil;
+      fotoPerfil.style.display = "block";
+      iconoFoto.style.display = "none";
+
+    }
+
+  } catch (error) {
+    console.error("Error al cargar foto:", error);
+  }
+
+};
+
 window.cerrarPerfil = function() {
   document.getElementById("profilePanel").classList.remove("visible");
 };
-  // Cargar foto guardada
-
-const fotoGuardada = localStorage.getItem("nexora_foto_perfil");
-
-if (fotoGuardada) {
-  fotoPerfil.src = fotoGuardada;
-  fotoPerfil.style.display = "block";
-  iconoFoto.style.display = "none";
-}
 
 
 // Volver al inicio
