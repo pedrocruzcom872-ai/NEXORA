@@ -11,7 +11,7 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+  
 body {
   background: #000;
   color: white;
@@ -457,11 +457,26 @@ nav b {
 
 <nav>
   <button onclick="irInicio()"><b>⌂</b>Inicio</button>
-  <button onclick="proximamente()"><b>⌕</b>Buscar</button>
+  <button onclick="abrirBuscar()"><b>⌕</b>Buscar</button>
   <button onclick="proximamente()"><b>＋</b>Crear</button>
   <button onclick="proximamente()"><b>♡</b>Actividad</button>
   <button onclick="abrirPerfil()"><b>♙</b>Perfil</button>
 </nav>
+  <!-- Panel de búsqueda -->
+
+<section id="searchPanel" style="display:none;">
+  <h2>Buscar en NEXORA</h2>
+
+  <input
+    type="text"
+    id="buscarUsuario"
+    placeholder="Buscar usuarios..."
+  >
+
+  <button onclick="buscarUsuarios()">Buscar</button>
+
+  <div id="resultadosBusqueda"></div>
+</section>  
 
 <!-- Panel de perfil -->
 
@@ -955,6 +970,19 @@ onAuthStateChanged(auth, (user) => {
 window.abrirPerfil = function() {
   document.getElementById("profilePanel").classList.add("visible");
 };
+
+// Abrir panel de búsqueda
+
+window.abrirBuscar = function() {
+  document.getElementById("profilePanel").classList.remove("visible");
+  document.getElementById("searchPanel").style.display = "block";
+};
+
+// Cerrar panel de búsqueda
+
+window.cerrarBuscar = function() {
+  document.getElementById("searchPanel").style.display = "none";
+};  
   
 // Cambiar foto de perfil y guardarla en Firebase
 
