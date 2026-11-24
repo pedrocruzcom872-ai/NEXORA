@@ -17,17 +17,7 @@ header{position:fixed;top:0;width:100%;height:55px;display:flex;align-items:cent
 .post:nth-child(2){background:linear-gradient(160deg,#35203b,#090909)}
 .post:nth-child(3){background:linear-gradient(160deg,#183c35,#090909)}
 
-/* BOTONES DE INTERACCIÓN */
-.actions{
-  position:absolute;
-  right:15px;
-  bottom:190px;
-  display:flex;
-  flex-direction:column;
-  gap:22px;
-  text-align:center;
-  z-index:4;
-}
+.actions{position:absolute;right:15px;bottom:190px;display:flex;flex-direction:column;gap:22px;text-align:center;z-index:4}
 .actions span{font-size:27px}
 .actions small{display:block;font-size:12px}
 .info{position:absolute;bottom:90px;left:15px;z-index:3}
@@ -75,7 +65,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
 .estadistica strong{display:block;font-size:20px;margin-bottom:4px;color:#00e5ff}
 .logout-btn{width:100%;padding:14px;margin-top:35px;background:#191919;border:1px solid #ff4545;border-radius:8px;color:white;font-size:16px;cursor:pointer}
 
-/* LISTA DE SEGUIDORES */
+/* SEGUIDORES */
 #panelRelaciones{display:none;position:fixed;inset:0;background:#080808;z-index:50;padding:22px;overflow-y:auto}
 #panelRelaciones.visible{display:block}
 .relacion-item{display:flex;align-items:center;gap:12px;padding:12px;margin-top:10px;background:#191919;border-radius:10px;cursor:pointer}
@@ -97,80 +87,28 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
 #listaComentarios strong{display:block;color:#00e5ff;margin-bottom:4px}
 #listaComentarios span{display:block;color:#eee}
 
-/* MODAL PERSONALIZADO NEXORA */
-.modal-confirmacion{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:10000;
-  background:rgba(0,0,0,.78);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  align-items:center;
-  justify-content:center;
-  padding:25px;
-}
-.modal-confirmacion.visible{
-  display:flex;
-}
-.modal-caja{
-  width:100%;
-  max-width:340px;
-  background:linear-gradient(160deg,#191919,#0c0c0c);
-  border:1px solid #333;
-  border-radius:20px;
-  padding:25px;
-  text-align:center;
-  box-shadow:0 0 35px #0008;
-  animation:modalEntrada .2s ease;
-}
-@keyframes modalEntrada{
-  from{transform:scale(.92);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
-.modal-logo{
-  font-size:23px;
-  font-weight:bold;
-  letter-spacing:3px;
-  color:#00e5ff;
-  margin-bottom:20px;
-}
-.modal-caja h3{
-  color:white;
-  font-size:19px;
-  margin-bottom:12px;
-}
-.modal-caja p{
-  color:#aaa;
-  font-size:14px;
-  line-height:1.5;
-  margin-bottom:25px;
-}
-.modal-botones{
-  display:flex;
-  gap:12px;
-}
-.modal-botones button{
-  flex:1;
-  padding:13px;
-  border-radius:10px;
-  border:none;
-  font-weight:bold;
-  font-size:15px;
-  cursor:pointer;
-}
-.modal-cancelar{
-  background:#292929;
-  color:white;
-  border:1px solid #444 !important;
-}
-.modal-aceptar{
-  background:#00e5ff;
-  color:#000;
-}
-.modal-botones button:active{
-  transform:scale(.96);
-}
+/* MODAL NEXORA */
+.modal-confirmacion{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:25px}
+.modal-confirmacion.visible{display:flex}
+.modal-caja{width:100%;max-width:340px;background:linear-gradient(160deg,#191919,#0c0c0c);border:1px solid #333;border-radius:20px;padding:25px;text-align:center;box-shadow:0 0 35px #0008;animation:modalEntrada .2s ease}
+@keyframes modalEntrada{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-logo{font-size:23px;font-weight:bold;letter-spacing:3px;color:#00e5ff;margin-bottom:20px}
+.modal-caja h3{color:white;font-size:19px;margin-bottom:12px}
+.modal-caja p{color:#aaa;font-size:14px;line-height:1.5;margin-bottom:25px}
+.modal-botones{display:flex;gap:12px}
+.modal-botones button{flex:1;padding:13px;border-radius:10px;border:none;font-weight:bold;font-size:15px;cursor:pointer}
+.modal-cancelar{background:#292929;color:white;border:1px solid #444!important}
+.modal-aceptar{background:#00e5ff;color:#000}
+.modal-botones button:active{transform:scale(.96)}
+
+/* ACTIVIDAD */
+#activityPanel{display:none;position:fixed;inset:0;z-index:40;background:#080808;color:white;padding:22px 20px 85px;overflow-y:auto}
+.activity-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.activity-header h2{color:#00e5ff}
+.activity-item{display:flex;align-items:center;gap:12px;padding:14px;margin-bottom:10px;background:#191919;border:1px solid #292929;border-radius:12px}
+.activity-avatar{width:45px;height:45px;border-radius:50%;object-fit:cover;background:#263d4b;flex-shrink:0}
+.activity-text{font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.activity-date{display:block;color:#888;font-size:11px;margin-top:4px}
 </style>
 </head>
 
@@ -216,7 +154,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   </section>
 </main>
 
-<!-- MODAL DE CONFIRMACIÓN -->
+<!-- MODAL -->
 <div id="modalConfirmacion" class="modal-confirmacion">
   <div class="modal-caja">
     <div class="modal-logo">NEXORA</div>
@@ -241,15 +179,23 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
     <button onclick="enviarComentario()">Enviar</button>
   </div>
 </div>
-
-<!-- NAVEGACIÓN -->
+  <!-- NAVEGACIÓN -->
 <nav>
   <button onclick="irInicio()"><b>⌂</b>Inicio</button>
   <button onclick="abrirBuscar()"><b>⌕</b>Buscar</button>
   <button onclick="proximamente()"><b>＋</b>Crear</button>
-  <button onclick="proximamente()"><b>♡</b>Actividad</button>
+  <button onclick="abrirActividad()"><b>♡</b>Actividad</button>
   <button onclick="abrirPerfil()"><b>♙</b>Perfil</button>
 </nav>
+
+<!-- ACTIVIDAD -->
+<section id="activityPanel">
+  <div class="activity-header">
+    <h2>Actividad</h2>
+    <button class="close-search" onclick="cerrarActividad()">×</button>
+  </div>
+  <div id="listaActividad">Tus notificaciones aparecerán aquí.</div>
+</section>
 
 <!-- BÚSQUEDA -->
 <section id="searchPanel">
@@ -291,7 +237,6 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   </div>
 
   <button id="botonSeguir" class="boton-perfil" style="display:none">Seguir</button>
-
   <button id="botonEditarPerfil" class="boton-perfil">✏️ Editar perfil</button>
 
   <div id="formularioEditarPerfil" style="display:none">
@@ -305,7 +250,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
 </section>
 
-<!-- LISTA DE SEGUIDORES Y SEGUIDOS -->
+<!-- LISTA DE SEGUIDORES -->
 <section id="panelRelaciones">
   <div class="search-header">
     <h2 id="tituloRelaciones">Seguidores</h2>
@@ -348,47 +293,37 @@ let perfilAbiertoUid = null;
 let detenerSeguimiento = null;
 let detenerContadorSeguidores = null;
 let detenerContadorSeguidos = null;
+let detenerNotificaciones = null;
 
 const fotoPerfil = document.getElementById("fotoPerfil");
 const iconoFoto = document.getElementById("iconoFotoPerfil");
 const botones = document.querySelectorAll(".like-btn");
 
-/* CONFIRMACIÓN PERSONALIZADA */
+/* MODAL DE CONFIRMACIÓN */
 function confirmarNexora(titulo,mensaje) {
   return new Promise(resolve=>{
-    const modal = document.getElementById("modalConfirmacion");
-    const tituloModal = document.getElementById("modalTitulo");
-    const mensajeModal = document.getElementById("modalMensaje");
-    const aceptar = document.getElementById("modalAceptar");
-    const cancelar = document.getElementById("modalCancelar");
+    const modal=document.getElementById("modalConfirmacion");
+    const tituloModal=document.getElementById("modalTitulo");
+    const mensajeModal=document.getElementById("modalMensaje");
+    const aceptar=document.getElementById("modalAceptar");
+    const cancelar=document.getElementById("modalCancelar");
 
-    tituloModal.textContent = titulo;
-    mensajeModal.textContent = mensaje;
-
+    tituloModal.textContent=titulo;
+    mensajeModal.textContent=mensaje;
     modal.classList.add("visible");
 
-    function terminar(resultado) {
+    function terminar(resultado){
       modal.classList.remove("visible");
-
       aceptar.removeEventListener("click",aceptarAccion);
       cancelar.removeEventListener("click",cancelarAccion);
       modal.removeEventListener("click",clickFondo);
-
       resolve(resultado);
     }
 
-    function aceptarAccion(){
-      terminar(true);
-    }
-
-    function cancelarAccion(){
-      terminar(false);
-    }
-
+    function aceptarAccion(){terminar(true)}
+    function cancelarAccion(){terminar(false)}
     function clickFondo(evento){
-      if(evento.target===modal){
-        terminar(false);
-      }
+      if(evento.target===modal)terminar(false);
     }
 
     aceptar.addEventListener("click",aceptarAccion);
@@ -398,64 +333,50 @@ function confirmarNexora(titulo,mensaje) {
 }
 
 /* COMPARTIR PUBLICACIÓN */
-window.compartirPublicacion = async function(postId,descripcion) {
-  const url = window.location.href.split("#")[0]+"#"+postId;
+window.compartirPublicacion=async function(postId,descripcion){
+  const url=window.location.href.split("#")[0]+"#"+postId;
+  const datos={title:"NEXORA",text:descripcion+" — Descúbrelo en NEXORA",url:url};
 
-  const datosCompartir = {
-    title:"NEXORA",
-    text:descripcion+" — Descúbrelo en NEXORA",
-    url:url
-  };
-
-  try {
+  try{
     if(navigator.share){
-      await navigator.share(datosCompartir);
-    }else if(navigator.clipboard && window.isSecureContext){
+      await navigator.share(datos);
+    }else if(navigator.clipboard&&window.isSecureContext){
       await navigator.clipboard.writeText(url);
-      alert("¡Enlace copiado! Ya puedes compartirlo.");
+      alert("¡Enlace copiado!");
     }else{
-      const campo = document.createElement("textarea");
-      campo.value = url;
+      const campo=document.createElement("textarea");
+      campo.value=url;
       document.body.appendChild(campo);
       campo.select();
-      const copiado = document.execCommand("copy");
+      const copiado=document.execCommand("copy");
       campo.remove();
-
-      if(copiado){
-        alert("¡Enlace copiado! Ya puedes compartirlo.");
-      }else{
-        prompt("Copia este enlace para compartir:",url);
-      }
+      if(copiado)alert("¡Enlace copiado!");
+      else prompt("Copia este enlace:",url);
     }
   }catch(error){
     if(error.name!=="AbortError"){
-      console.error("Error al compartir:",error);
-      alert("No se pudo compartir esta publicación.");
+      console.error(error);
+      alert("No se pudo compartir.");
     }
   }
 };
 
 /* PERFIL PROPIO */
-async function cargarPerfil(user) {
+async function cargarPerfil(user){
   try{
-    const perfilSnap = await getDoc(doc(db,"usuarios",user.uid));
-
-    if(perfilSnap.exists()){
-      const datos = perfilSnap.data();
+    const snap=await getDoc(doc(db,"usuarios",user.uid));
+    if(snap.exists()){
+      const datos=snap.data();
       document.getElementById("nombrePerfil").textContent="@"+(datos.nombreUsuario||"usuario");
       document.getElementById("biografiaPerfil").textContent=datos.biografia||"";
     }
-  }catch(error){
-    console.error("Error al cargar perfil:",error);
-  }
+  }catch(error){console.error(error)}
 }
 
-async function cargarFotoPerfilNexora(usuario) {
+async function cargarFotoPerfilNexora(usuario){
   if(!usuario)return;
-
   try{
-    const perfil = await getDoc(doc(db,"usuarios",usuario.uid));
-
+    const perfil=await getDoc(doc(db,"usuarios",usuario.uid));
     if(perfil.exists()&&perfil.data().fotoPerfil){
       fotoPerfil.src=perfil.data().fotoPerfil;
       fotoPerfil.style.display="block";
@@ -464,17 +385,15 @@ async function cargarFotoPerfilNexora(usuario) {
       fotoPerfil.style.display="none";
       iconoFoto.style.display="flex";
     }
-  }catch(error){
-    console.error("Error al cargar foto:",error);
-  }
+  }catch(error){console.error(error)}
 }
 
 /* EDITAR PERFIL */
-const botonEditarPerfil = document.getElementById("botonEditarPerfil");
-const formularioEditarPerfil = document.getElementById("formularioEditarPerfil");
-const nuevoNombreUsuario = document.getElementById("nuevoNombreUsuario");
-const nuevaBiografia = document.getElementById("nuevaBiografia");
-const guardarPerfil = document.getElementById("guardarPerfil");
+const botonEditarPerfil=document.getElementById("botonEditarPerfil");
+const formularioEditarPerfil=document.getElementById("formularioEditarPerfil");
+const nuevoNombreUsuario=document.getElementById("nuevoNombreUsuario");
+const nuevaBiografia=document.getElementById("nuevaBiografia");
+const guardarPerfil=document.getElementById("guardarPerfil");
 
 botonEditarPerfil.addEventListener("click",()=>{
   nuevoNombreUsuario.value=document.getElementById("nombrePerfil").textContent.replace(/^@/,"");
@@ -488,34 +407,25 @@ document.getElementById("cancelarEdicion").addEventListener("click",()=>{
 
 guardarPerfil.addEventListener("click",async()=>{
   if(!usuarioActual)return;
-
   const nombre=nuevoNombreUsuario.value.trim().replace(/^@/,"");
   const bio=nuevaBiografia.value.trim();
 
-  if(!nombre){
-    alert("Escribe un nombre de usuario.");
-    return;
-  }
+  if(!nombre){alert("Escribe un nombre de usuario.");return}
 
   guardarPerfil.disabled=true;
-
   try{
     await setDoc(doc(db,"usuarios",usuarioActual.uid),{
-      nombreUsuario:nombre,
-      biografia:bio
+      nombreUsuario:nombre,biografia:bio
     },{merge:true});
 
     document.getElementById("nombrePerfil").textContent="@"+nombre;
     document.getElementById("biografiaPerfil").textContent=bio;
     formularioEditarPerfil.style.display="none";
-
     alert("¡Perfil actualizado!");
   }catch(error){
     console.error(error);
     alert("No se pudo actualizar el perfil.");
-  }finally{
-    guardarPerfil.disabled=false;
-  }
+  }finally{guardarPerfil.disabled=false}
 });
 
 /* VIDEOS */
@@ -540,41 +450,39 @@ videos.forEach(video=>observer.observe(video));
 /* LIKES */
 botones.forEach(button=>button.disabled=true);
 
-async function darLike(button) {
+async function darLike(button){
   if(!usuarioActual||button.disabled)return;
-
   const postId=button.dataset.postId;
   const userId=usuarioActual.uid;
   const referencia=doc(db,"publicaciones",postId,"likes",userId);
 
   button.disabled=true;
-
   try{
     if(button.dataset.liked==="true"){
       await deleteDoc(referencia);
     }else{
       await setDoc(referencia,{
-        uid:userId,
-        createdAt:serverTimestamp()
+        uid:userId,createdAt:serverTimestamp()
       });
+
+      const propietario=await obtenerPropietarioPublicacion(postId);
+      if(propietario){
+        await crearNotificacion(propietario,"like",postId,"le dio Me gusta a tu video.");
+      }
     }
   }catch(error){
     console.error(error);
     alert("No se pudo guardar el Me gusta.");
-  }finally{
-    button.disabled=false;
-  }
+  }finally{button.disabled=false}
 }
 
 window.darLike=darLike;
 
 /* COMENTARIOS */
-window.abrirComentarios=function(postId) {
+window.abrirComentarios=function(postId){
   publicacionActual=postId;
-
   const panel=document.getElementById("panelComentarios");
   const lista=document.getElementById("listaComentarios");
-
   panel.classList.add("visible");
   lista.textContent="Cargando comentarios...";
 
@@ -585,11 +493,9 @@ window.abrirComentarios=function(postId) {
 
   detenerComentarios=onSnapshot(consulta,snapshot=>{
     lista.innerHTML="";
-
     const boton=[...document.querySelectorAll(".comment-btn")].find(b=>
       b.getAttribute("onclick")==="abrirComentarios('"+postId+"')"
     );
-
     if(boton)boton.querySelector("small").textContent=snapshot.size;
 
     if(snapshot.empty){
@@ -620,7 +526,6 @@ window.abrirComentarios=function(postId) {
 
       nombre.textContent="@"+(comentario.nombreUsuario||"usuario")+": ";
       texto.textContent=comentario.texto||"";
-
       elemento.append(foto,nombre,texto);
       lista.appendChild(elemento);
     });
@@ -630,28 +535,19 @@ window.abrirComentarios=function(postId) {
   });
 };
 
-window.cerrarComentarios=function() {
+window.cerrarComentarios=function(){
   document.getElementById("panelComentarios").classList.remove("visible");
-
-  if(detenerComentarios){
-    detenerComentarios();
-    detenerComentarios=null;
-  }
+  if(detenerComentarios){detenerComentarios();detenerComentarios=null}
 };
 
-window.enviarComentario=async function() {
+window.enviarComentario=async function(){
   if(!usuarioActual||!publicacionActual){
-    alert("Inicia sesión para comentar.");
-    return;
+    alert("Inicia sesión para comentar.");return;
   }
 
   const campo=document.getElementById("textoComentario");
   const texto=campo.value.trim();
-
-  if(!texto){
-    alert("Escribe un comentario.");
-    return;
-  }
+  if(!texto){alert("Escribe un comentario.");return}
 
   try{
     const perfil=await getDoc(doc(db,"usuarios",usuarioActual.uid));
@@ -664,6 +560,16 @@ window.enviarComentario=async function() {
       createdAt:serverTimestamp()
     });
 
+    const propietario=await obtenerPropietarioPublicacion(publicacionActual);
+    if(propietario){
+      await crearNotificacion(
+        propietario,
+        "comentario",
+        publicacionActual,
+        "comentó tu video: "+texto
+      );
+    }
+
     campo.value="";
   }catch(error){
     console.error(error);
@@ -675,9 +581,8 @@ window.enviarComentario=async function() {
 const campoBuscarUsuario=document.getElementById("buscarUsuario");
 const resultadosBusqueda=document.getElementById("resultadosBusqueda");
 
-function mostrarResultadosBusqueda() {
+function mostrarResultadosBusqueda(){
   const termino=campoBuscarUsuario.value.trim().toLowerCase();
-
   resultadosBusqueda.innerHTML="";
 
   if(!termino){
@@ -714,13 +619,10 @@ function mostrarResultadosBusqueda() {
 
     const datos=document.createElement("div");
     datos.className="resultado-datos";
-
     const nombre=document.createElement("strong");
     nombre.textContent="@"+(perfil.nombreUsuario||"usuario");
-
     const bio=document.createElement("p");
     bio.textContent=perfil.biografia||"";
-
     datos.append(nombre,bio);
     tarjeta.appendChild(datos);
 
@@ -728,445 +630,617 @@ function mostrarResultadosBusqueda() {
       cerrarBuscar();
       abrirPerfilUsuario(perfil.uid);
     });
-
     resultadosBusqueda.appendChild(tarjeta);
   });
 }
 
 campoBuscarUsuario.addEventListener("input",mostrarResultadosBusqueda);
 
-window.abrirBuscar=function() {
+window.abrirBuscar=function(){
   document.getElementById("profilePanel").classList.remove("visible");
+  document.getElementById("activityPanel").style.display="none";
   document.getElementById("searchPanel").style.display="block";
 
   if(!detenerBusquedaUsuarios){
     resultadosBusqueda.textContent="Cargando usuarios...";
-
     detenerBusquedaUsuarios=onSnapshot(collection(db,"usuarios"),snapshot=>{
       usuariosBusqueda=snapshot.docs.map(documento=>({
-        uid:documento.id,
-        ...documento.data()
+        uid:documento.id,...documento.data()
       }));
-
       mostrarResultadosBusqueda();
     },error=>{
       console.error(error);
       resultadosBusqueda.textContent="No se pudieron cargar los usuarios.";
     });
-  }else{
-    mostrarResultadosBusqueda();
-  }
+  }else{mostrarResultadosBusqueda()}
 };
 
-window.cerrarBuscar=function() {
+window.cerrarBuscar=function(){
   document.getElementById("searchPanel").style.display="none";
 };
+// =====================================
+// NOTIFICACIONES
+// =====================================
 
-/* LIMPIAR ESCUCHAS DEL PERFIL */
-function limpiarEscuchasPerfil() {
-  if(detenerSeguimiento)detenerSeguimiento();
-  if(detenerContadorSeguidores)detenerContadorSeguidores();
-  if(detenerContadorSeguidos)detenerContadorSeguidos();
+async function obtenerPropietarioPublicacion(postId) {
+  try {
+    const referencia = doc(db, "publicaciones", postId);
+    const resultado = await getDoc(referencia);
 
-  detenerSeguimiento=null;
-  detenerContadorSeguidores=null;
-  detenerContadorSeguidos=null;
-}
+    if (!resultado.exists()) return null;
 
-/* ABRIR PERFIL PROPIO */
-window.abrirPerfil=async function() {
-  if(!usuarioActual)return;
-  await abrirPerfilUsuario(usuarioActual.uid);
-};
+    const datos = resultado.data();
 
-/* ABRIR PERFIL DE CUALQUIER USUARIO */
-async function abrirPerfilUsuario(uid) {
-  if(!usuarioActual||!uid)return;
-
-  limpiarEscuchasPerfil();
-  perfilAbiertoUid=uid;
-
-  const esMiPerfil=uid===usuarioActual.uid;
-  const panel=document.getElementById("profilePanel");
-
-  document.getElementById("tituloPerfil").textContent=
-    esMiPerfil?"Mi perfil":"Perfil";
-
-  document.getElementById("botonEditarPerfil").style.display=
-    esMiPerfil?"inline-block":"none";
-
-  document.getElementById("botonCambiarFoto").style.display=
-    esMiPerfil?"inline-block":"none";
-
-  document.getElementById("selectorFotoPerfil").style.display="none";
-
-  document.getElementById("logoutBtn").style.display=
-    esMiPerfil?"block":"none";
-
-  document.getElementById("correoUsuario").style.display=
-    esMiPerfil?"block":"none";
-
-  document.getElementById("botonSeguir").style.display=
-    esMiPerfil?"none":"inline-block";
-
-  formularioEditarPerfil.style.display="none";
-
-  document.getElementById("nombrePerfil").textContent="Cargando...";
-  document.getElementById("biografiaPerfil").textContent="";
-
-  fotoPerfil.style.display="none";
-  iconoFoto.style.display="flex";
-
-  panel.classList.add("visible");
-
-  try{
-    const perfilSnap=await getDoc(doc(db,"usuarios",uid));
-
-    if(!perfilSnap.exists()){
-      document.getElementById("nombrePerfil").textContent="@usuario";
-      document.getElementById("biografiaPerfil").textContent="Este perfil no está disponible.";
-      return;
-    }
-
-    const datos=perfilSnap.data();
-
-    document.getElementById("nombrePerfil").textContent=
-      "@"+(datos.nombreUsuario||"usuario");
-
-    document.getElementById("biografiaPerfil").textContent=
-      datos.biografia||"";
-
-    if(datos.fotoPerfil){
-      fotoPerfil.src=datos.fotoPerfil;
-      fotoPerfil.style.display="block";
-      iconoFoto.style.display="none";
-    }
-
-    if(esMiPerfil){
-      document.getElementById("correoUsuario").textContent=
-        usuarioActual.email||"Cuenta de Google";
-    }
-
-    activarContadores(uid);
-
-    if(!esMiPerfil)activarBotonSeguimiento(uid);
-
-  }catch(error){
-    console.error("Error al abrir perfil:",error);
-    alert("No se pudo abrir este perfil.");
+    return datos.uid || datos.ownerUid || datos.creadorUid || null;
+  } catch (error) {
+    console.error("Error al buscar propietario:", error);
+    return null;
   }
 }
 
-/* CONTADORES EN TIEMPO REAL */
-function activarContadores(uid) {
-  const seguidoresQuery=query(
-    collection(db,"seguimientos"),
-    where("seguidoUid","==",uid)
-  );
+async function crearNotificacion(destinoUid, tipo, postId = "", texto = "") {
+  try {
+    if (!usuarioActual || !destinoUid) return;
+    if (usuarioActual.uid === destinoUid) return;
 
-  const seguidosQuery=query(
-    collection(db,"seguimientos"),
-    where("seguidorUid","==",uid)
-  );
-
-  detenerContadorSeguidores=onSnapshot(seguidoresQuery,snapshot=>{
-    document.getElementById("totalSeguidores").textContent=snapshot.size;
-  },console.error);
-
-  detenerContadorSeguidos=onSnapshot(seguidosQuery,snapshot=>{
-    document.getElementById("totalSeguidos").textContent=snapshot.size;
-  },console.error);
-}
-
-/* SEGUIR Y DEJAR DE SEGUIR */
-function activarBotonSeguimiento(uid) {
-  const boton=document.getElementById("botonSeguir");
-  const relacionId=usuarioActual.uid+"_"+uid;
-  const relacionRef=doc(db,"seguimientos",relacionId);
-
-  boton.disabled=true;
-  boton.textContent="Cargando...";
-
-  detenerSeguimiento=onSnapshot(relacionRef,snapshot=>{
-    const siguiendo=snapshot.exists();
-
-    boton.textContent=siguiendo?"Siguiendo":"Seguir";
-    boton.classList.toggle("siguiendo",siguiendo);
-    boton.disabled=false;
-  },error=>{
-    console.error("Error al consultar seguimiento:",error);
-    boton.textContent="No disponible";
-    boton.disabled=true;
-  });
-
-  boton.onclick=async()=>{
-    if(!usuarioActual||usuarioActual.uid===uid)return;
-
-    boton.disabled=true;
-
-    try{
-      const estado=await getDoc(relacionRef);
-
-      if(estado.exists()){
-        const confirmar=await confirmarNexora(
-          "Dejar de seguir",
-          "¿Quieres dejar de seguir a este usuario?"
-        );
-
-        if(confirmar){
-          await deleteDoc(relacionRef);
-        }
-      }else{
-        await setDoc(relacionRef,{
-          seguidorUid:usuarioActual.uid,
-          seguidoUid:uid,
-          createdAt:serverTimestamp()
-        });
-      }
-    }catch(error){
-      console.error("Error al cambiar seguimiento:",error);
-      alert("No se pudo actualizar el seguimiento.");
-    }finally{
-      boton.disabled=false;
-    }
-  };
-}
-
-/* MOSTRAR LISTAS DE SEGUIDORES Y SEGUIDOS */
-window.mostrarRelaciones=async function(tipo) {
-  if(!perfilAbiertoUid)return;
-
-  const panel=document.getElementById("panelRelaciones");
-  const lista=document.getElementById("listaRelaciones");
-  const titulo=document.getElementById("tituloRelaciones");
-
-  const esSeguidores=tipo==="seguidores";
-
-  titulo.textContent=esSeguidores?"Seguidores":"Siguiendo";
-  lista.textContent="Cargando...";
-  panel.classList.add("visible");
-
-  try{
-    const campo=esSeguidores?"seguidoUid":"seguidorUid";
-
-    const consulta=query(
-      collection(db,"seguimientos"),
-      where(campo,"==",perfilAbiertoUid)
+    const perfil = await getDoc(
+      doc(db, "usuarios", usuarioActual.uid)
     );
 
-    const resultados=await getDocs(consulta);
-    lista.innerHTML="";
+    const datos = perfil.exists() ? perfil.data() : {};
 
-    if(resultados.empty){
-      lista.textContent=esSeguidores
-        ?"Todavía no tiene seguidores."
-        :"Todavía no sigue a nadie.";
+    await addDoc(
+      collection(db, "usuarios", destinoUid, "notificaciones"),
+      {
+        actorUid: usuarioActual.uid,
+        uid: destinoUid,
+        actorNombre: datos.nombreUsuario || "Usuario",
+        actorFoto: datos.fotoPerfil || "",
+        tipo,
+        postId,
+        texto,
+        leida: false,
+        createdAt: serverTimestamp()
+      }
+    );
+  } catch (error) {
+    console.error("Error al crear notificación:", error);
+  }
+}
+
+window.abrirActividad = function() {
+  document.getElementById("profilePanel").classList.remove("visible");
+  document.getElementById("searchPanel").style.display = "none";
+  document.getElementById("activityPanel").style.display = "block";
+};
+
+window.cerrarActividad = function() {
+  document.getElementById("activityPanel").style.display = "none";
+};
+
+function escucharNotificaciones(uid) {
+  if (detenerNotificaciones) {
+    detenerNotificaciones();
+  }
+
+  const lista = document.getElementById("listaActividad");
+  lista.textContent = "Cargando actividad...";
+
+  const referencia = query(
+    collection(db, "usuarios", uid, "notificaciones"),
+    orderBy("createdAt", "desc")
+  );
+
+  detenerNotificaciones = onSnapshot(
+    referencia,
+    (resultado) => {
+      lista.innerHTML = "";
+
+      if (resultado.empty) {
+        lista.textContent = "Todavía no tienes notificaciones.";
+        return;
+      }
+
+      resultado.forEach((documento) => {
+        const datos = documento.data();
+        const elemento = document.createElement("div");
+
+        elemento.className = "activity-item";
+
+        const nombre = document.createElement("strong");
+        nombre.textContent = datos.actorNombre || "Usuario";
+
+        const mensaje = document.createElement("span");
+
+        if (datos.tipo === "seguir") {
+          mensaje.textContent = " comenzó a seguirte.";
+        } else if (datos.tipo === "like") {
+          mensaje.textContent = " le dio Me gusta a tu video.";
+        } else if (datos.tipo === "comentario") {
+          mensaje.textContent = " comentó en tu video.";
+        } else {
+          mensaje.textContent = " realizó una actividad.";
+        }
+
+        elemento.append(nombre, mensaje);
+
+        if (datos.texto) {
+          const detalle = document.createElement("p");
+          detalle.textContent = datos.texto;
+          elemento.appendChild(detalle);
+        }
+
+        lista.appendChild(elemento);
+      });
+    },
+    (error) => {
+      console.error("Error en notificaciones:", error);
+      lista.textContent = "No se pudieron cargar las notificaciones.";
+    }
+  );
+}
+
+  // =====================================
+// PERFIL Y SEGUIMIENTOS
+// =====================================
+
+window.abrirPerfil = async function() {
+  if (!usuarioActual) return;
+
+  document.getElementById("searchPanel").style.display = "none";
+  document.getElementById("activityPanel").style.display = "none";
+
+  const panel = document.getElementById("profilePanel");
+  panel.classList.add("visible");
+
+  document.getElementById("tituloPerfil").textContent = "Mi perfil";
+  document.getElementById("botonSeguir").style.display = "none";
+  document.getElementById("botonEditarPerfil").style.display = "block";
+  document.getElementById("botonCambiarFoto").style.display = "block";
+  document.getElementById("logoutBtn").style.display = "block";
+  document.getElementById("correoUsuario").textContent =
+    usuarioActual.email || "";
+
+  await cargarPerfil(usuarioActual);
+  await cargarFotoPerfilNexora(usuarioActual);
+
+  await cargarContadores(usuarioActual.uid);
+};
+
+async function abrirPerfilUsuario(uid) {
+  if (!uid || !usuarioActual) return;
+
+  document.getElementById("searchPanel").style.display = "none";
+  document.getElementById("activityPanel").style.display = "none";
+
+  document.getElementById("profilePanel").classList.add("visible");
+
+  document.getElementById("tituloPerfil").textContent = "Perfil";
+  document.getElementById("botonSeguir").style.display = "block";
+  document.getElementById("botonEditarPerfil").style.display = "none";
+  document.getElementById("botonCambiarFoto").style.display = "none";
+  document.getElementById("logoutBtn").style.display = "none";
+  document.getElementById("formularioEditarPerfil").style.display = "none";
+
+  try {
+    const referencia = doc(db, "usuarios", uid);
+    const resultado = await getDoc(referencia);
+
+    if (!resultado.exists()) {
+      alert("No se encontró este perfil.");
       return;
     }
 
-    for(const relacion of resultados.docs){
-      const datosRelacion=relacion.data();
+    const datos = resultado.data();
 
-      const otroUid=esSeguidores
-        ?datosRelacion.seguidorUid
-        :datosRelacion.seguidoUid;
+    document.getElementById("nombrePerfil").textContent =
+      "@" + (datos.nombreUsuario || "usuario");
 
-      const usuarioSnap=await getDoc(doc(db,"usuarios",otroUid));
+    document.getElementById("biografiaPerfil").textContent =
+      datos.biografia || "";
 
-      if(!usuarioSnap.exists())continue;
+    if (datos.fotoPerfil) {
+      fotoPerfil.src = datos.fotoPerfil;
+      fotoPerfil.style.display = "block";
+      iconoFoto.style.display = "none";
+    } else {
+      fotoPerfil.style.display = "none";
+      iconoFoto.style.display = "flex";
+    }
 
-      const perfil=usuarioSnap.data();
-      const item=document.createElement("div");
+    document.getElementById("correoUsuario").textContent = "";
 
-      item.className="relacion-item";
+    await cargarContadores(uid);
+    await actualizarBotonSeguir(uid);
 
-      if(perfil.fotoPerfil){
-        const img=document.createElement("img");
-        img.src=perfil.fotoPerfil;
-        img.alt="Foto de perfil";
-        item.appendChild(img);
-      }else{
-        const vacia=document.createElement("div");
-        vacia.className="relacion-foto-vacia";
-        vacia.textContent="♙";
-        item.appendChild(vacia);
+    document.getElementById("botonSeguir").onclick = async () => {
+      await seguirUsuario(uid);
+      await actualizarBotonSeguir(uid);
+      await cargarContadores(uid);
+    };
+
+  } catch (error) {
+    console.error(error);
+    alert("No se pudo abrir el perfil.");
+  }
+}
+
+async function actualizarBotonSeguir(uid) {
+  const boton = document.getElementById("botonSeguir");
+  const id = usuarioActual.uid + "_" + uid;
+
+  const resultado = await getDoc(doc(db, "seguimientos", id));
+
+  if (resultado.exists()) {
+    boton.textContent = "Siguiendo";
+    boton.classList.add("siguiendo");
+  } else {
+    boton.textContent = "Seguir";
+    boton.classList.remove("siguiendo");
+  }
+}
+
+async function seguirUsuario(uid) {
+  if (!usuarioActual || !uid || uid === usuarioActual.uid) return;
+
+  const id = usuarioActual.uid + "_" + uid;
+  const referencia = doc(db, "seguimientos", id);
+  const resultado = await getDoc(referencia);
+
+  if (resultado.exists()) {
+    const confirmar = await confirmarNexora(
+      "Dejar de seguir",
+      "¿Quieres dejar de seguir a este usuario?"
+    );
+
+    if (!confirmar) return;
+
+    await deleteDoc(referencia);
+  } else {
+    await setDoc(referencia, {
+      seguidorUid: usuarioActual.uid,
+      seguidoUid: uid,
+      createdAt: serverTimestamp()
+    });
+
+    await crearNotificacion(uid, "seguir");
+  }
+}
+
+  // =====================================
+// CONTADORES DE SEGUIDORES
+// =====================================
+
+let uidPerfilRelaciones = null;
+
+async function cargarContadores(uid) {
+  try {
+    const seguidores = await getDocs(
+      query(
+        collection(db, "seguimientos"),
+        where("seguidoUid", "==", uid)
+      )
+    );
+
+    const seguidos = await getDocs(
+      query(
+        collection(db, "seguimientos"),
+        where("seguidorUid", "==", uid)
+      )
+    );
+
+    document.getElementById("totalSeguidores").textContent =
+      seguidores.size;
+
+    document.getElementById("totalSeguidos").textContent =
+      seguidos.size;
+
+  } catch (error) {
+    console.error("Error al cargar contadores:", error);
+  }
+}
+
+// Guardar el UID del perfil que se está viendo
+const abrirPerfilOriginal = window.abrirPerfil;
+
+window.abrirPerfil = async function() {
+  if (usuarioActual) {
+    uidPerfilRelaciones = usuarioActual.uid;
+  }
+
+  await abrirPerfilOriginal();
+};
+
+const abrirPerfilUsuarioOriginal = abrirPerfilUsuario;
+
+abrirPerfilUsuario = async function(uid) {
+  uidPerfilRelaciones = uid;
+  await abrirPerfilUsuarioOriginal(uid);
+};
+
+
+// =====================================
+// LISTA DE SEGUIDORES Y SEGUIDOS
+// =====================================
+
+window.mostrarRelaciones = async function(tipo) {
+  if (!usuarioActual) return;
+
+  const uid = uidPerfilRelaciones || usuarioActual.uid;
+  const panel = document.getElementById("panelRelaciones");
+  const lista = document.getElementById("listaRelaciones");
+  const titulo = document.getElementById("tituloRelaciones");
+
+  panel.classList.add("visible");
+  lista.textContent = "Cargando...";
+
+  titulo.textContent =
+    tipo === "seguidores" ? "Seguidores" : "Siguiendo";
+
+  try {
+    const consulta = tipo === "seguidores"
+      ? query(
+          collection(db, "seguimientos"),
+          where("seguidoUid", "==", uid)
+        )
+      : query(
+          collection(db, "seguimientos"),
+          where("seguidorUid", "==", uid)
+        );
+
+    const resultado = await getDocs(consulta);
+    lista.innerHTML = "";
+
+    if (resultado.empty) {
+      lista.textContent = "Todavía no hay usuarios.";
+      return;
+    }
+
+    for (const documento of resultado.docs) {
+      const datos = documento.data();
+
+      const otroUid = tipo === "seguidores"
+        ? datos.seguidorUid
+        : datos.seguidoUid;
+
+      const perfil = await getDoc(
+        doc(db, "usuarios", otroUid)
+      );
+
+      if (!perfil.exists()) continue;
+
+      const usuario = perfil.data();
+
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "relacion-item";
+
+      if (usuario.fotoPerfil) {
+        const foto = document.createElement("img");
+        foto.src = usuario.fotoPerfil;
+        foto.alt = "Foto de perfil";
+        tarjeta.appendChild(foto);
+      } else {
+        const foto = document.createElement("div");
+        foto.className = "relacion-foto-vacia";
+        foto.textContent = "♙";
+        tarjeta.appendChild(foto);
       }
 
-      const nombre=document.createElement("strong");
-      nombre.textContent="@"+(perfil.nombreUsuario||"usuario");
+      const nombre = document.createElement("strong");
+      nombre.textContent =
+        "@" + (usuario.nombreUsuario || "usuario");
 
-      item.appendChild(nombre);
+      tarjeta.appendChild(nombre);
 
-      item.addEventListener("click",async()=>{
-        cerrarRelaciones();
-        await abrirPerfilUsuario(otroUid);
+      tarjeta.addEventListener("click", () => {
+        window.cerrarRelaciones();
+        abrirPerfilUsuario(otroUid);
       });
 
-      lista.appendChild(item);
+      lista.appendChild(tarjeta);
     }
-  }catch(error){
-    console.error("Error al cargar la lista:",error);
-    lista.textContent="No se pudo cargar la lista.";
+
+    if (!lista.children.length) {
+      lista.textContent = "No hay perfiles disponibles.";
+    }
+
+  } catch (error) {
+    console.error(error);
+    lista.textContent = "No se pudieron cargar los usuarios.";
   }
 };
 
-window.cerrarRelaciones=function() {
-  document.getElementById("panelRelaciones").classList.remove("visible");
+window.cerrarRelaciones = function() {
+  document.getElementById("panelRelaciones")
+    .classList.remove("visible");
 };
 
-window.cerrarPerfil=function() {
-  document.getElementById("profilePanel").classList.remove("visible");
-  limpiarEscuchasPerfil();
-  perfilAbiertoUid=null;
+
+// =====================================
+// CERRAR PERFIL
+// =====================================
+
+window.cerrarPerfil = function() {
+  document.getElementById("profilePanel")
+    .classList.remove("visible");
+
+  document.getElementById("formularioEditarPerfil")
+    .style.display = "none";
 };
 
-/* CAMBIAR FOTO */
-const selectorFoto=document.getElementById("selectorFotoPerfil");
 
-selectorFoto.addEventListener("change",function() {
-  const archivo=selectorFoto.files[0];
+// =====================================
+// CAMBIAR FOTO DE PERFIL
+// =====================================
 
-  if(!archivo)return;
+document.getElementById("selectorFotoPerfil")
+.addEventListener("change", async (evento) => {
+  const archivo = evento.target.files[0];
 
-  if(!archivo.type.startsWith("image/")){
+  if (!archivo || !usuarioActual) return;
+
+  if (!archivo.type.startsWith("image/")) {
     alert("Selecciona una imagen válida.");
     return;
   }
 
-  if(!usuarioActual)return;
+  const lector = new FileReader();
 
-  const imagen=new Image();
-  const lector=new FileReader();
+  lector.onload = async function(e) {
+    const imagen = new Image();
 
-  lector.onload=function(){
-    imagen.onload=async function(){
-      const canvas=document.createElement("canvas");
-      const tamaño=256;
+    imagen.onload = async function() {
+      const canvas = document.createElement("canvas");
+      const contexto = canvas.getContext("2d");
 
-      canvas.width=tamaño;
-      canvas.height=tamaño;
+      canvas.width = 256;
+      canvas.height = 256;
 
-      const contexto=canvas.getContext("2d");
+      contexto.drawImage(imagen, 0, 0, 256, 256);
 
-      const escala=Math.min(
-        tamaño/imagen.width,
-        tamaño/imagen.height
-      );
+      const imagenComprimida =
+        canvas.toDataURL("image/jpeg", 0.65);
 
-      const ancho=imagen.width*escala;
-      const alto=imagen.height*escala;
+      try {
+        await setDoc(
+          doc(db, "usuarios", usuarioActual.uid),
+          { fotoPerfil: imagenComprimida },
+          { merge: true }
+        );
 
-      contexto.drawImage(
-        imagen,
-        (tamaño-ancho)/2,
-        (tamaño-alto)/2,
-        ancho,
-        alto
-      );
+        fotoPerfil.src = imagenComprimida;
+        fotoPerfil.style.display = "block";
+        iconoFoto.style.display = "none";
 
-      const fotoComprimida=canvas.toDataURL("image/jpeg",0.65);
+        alert("¡Foto de perfil actualizada!");
 
-      if(fotoComprimida.length>700000){
-        alert("La imagen sigue siendo demasiado grande. Elige otra foto.");
-        return;
-      }
-
-      try{
-        await setDoc(doc(db,"usuarios",usuarioActual.uid),{
-          fotoPerfil:fotoComprimida
-        },{merge:true});
-
-        fotoPerfil.src=fotoComprimida;
-        fotoPerfil.style.display="block";
-        iconoFoto.style.display="none";
-
-        alert("¡Foto de perfil guardada!");
-      }catch(error){
+      } catch (error) {
         console.error(error);
         alert("No se pudo guardar la foto.");
       }
     };
 
-    imagen.onerror=()=>alert("No se pudo abrir esa imagen.");
-    imagen.src=lector.result;
+    imagen.src = e.target.result;
   };
 
   lector.readAsDataURL(archivo);
 });
 
-/* SESIÓN Y LIKES */
-onAuthStateChanged(auth,user=>{
-  if(!user){
-    window.location.href="login.html";
-    return;
-  }
 
-  usuarioActual=user;
+// =====================================
+// CERRAR SESIÓN
+// =====================================
 
-  cargarPerfil(user);
-  cargarFotoPerfilNexora(user);
-
-  botones.forEach(button=>{
-    const postId=button.dataset.postId;
-    const likesRef=collection(db,"publicaciones",postId,"likes");
-
-    onSnapshot(likesRef,snapshot=>{
-      const total=snapshot.size;
-
-      const miLike=snapshot.docs.some(documento=>
-        documento.id===user.uid
-      );
-
-      button.dataset.liked=miLike?"true":"false";
-      button.querySelector("small").textContent=total;
-      button.firstChild.textContent=miLike?"♥ ":"♡ ";
-      button.style.color=miLike?"#ff2d55":"white";
-      button.disabled=false;
-    },error=>{
-      console.error("Error al leer likes:",error);
-      button.disabled=true;
-    });
-  });
-});
-
-/* INICIO */
-window.irInicio=function() {
-  document.getElementById("profilePanel").classList.remove("visible");
-  document.getElementById("searchPanel").style.display="none";
-  document.getElementById("panelRelaciones").classList.remove("visible");
-
-  limpiarEscuchasPerfil();
-  perfilAbiertoUid=null;
-
-  document.querySelector(".feed").scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-};
-
-/* CERRAR SESIÓN CON MODAL NEXORA */
-document.getElementById("logoutBtn").addEventListener("click",async()=>{
-  const confirmar=await confirmarNexora(
+document.getElementById("logoutBtn")
+.addEventListener("click", async () => {
+  const confirmar = await confirmarNexora(
     "Cerrar sesión",
-    "¿Seguro que quieres cerrar tu sesión de NEXORA?"
+    "¿Quieres salir de tu cuenta de NEXORA?"
   );
 
-  if(!confirmar)return;
+  if (!confirmar) return;
 
-  try{
+  try {
     await signOut(auth);
-    window.location.href="login.html";
-  }catch(error){
+    window.location.href = "login.html";
+  } catch (error) {
     console.error(error);
     alert("No se pudo cerrar la sesión.");
   }
 });
 
-/* FUNCIONES PRÓXIMAMENTE */
-window.proximamente=function() {
-  alert("Esta función de NEXORA todavía está en desarrollo.");
-};
-</script>
 
+// =====================================
+// CONTADORES Y ESTADO DE LIKES
+// =====================================
+
+botones.forEach((button) => {
+  const postId = button.dataset.postId;
+
+  const referencia = collection(
+    db,
+    "publicaciones",
+    postId,
+    "likes"
+  );
+
+  onSnapshot(referencia, (resultado) => {
+    const contador = button.querySelector("small");
+
+    if (contador) {
+      contador.textContent = resultado.size;
+    }
+
+    if (usuarioActual) {
+      const miLike = resultado.docs.some(
+        documento => documento.id === usuarioActual.uid
+      );
+
+      button.dataset.liked = miLike ? "true" : "false";
+      button.innerHTML = (miLike ? "♥ " : "♡ ") +
+        "<small>" + resultado.size + "</small>";
+
+      button.disabled = false;
+    }
+  }, (error) => {
+    console.error("Error al actualizar likes:", error);
+    button.disabled = false;
+  });
+});
+
+
+// =====================================
+// INICIO DE SESIÓN
+// =====================================
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    usuarioActual = null;
+    window.location.href = "login.html";
+    return;
+  }
+
+  usuarioActual = user;
+  uidPerfilRelaciones = user.uid;
+
+  document.getElementById("correoUsuario").textContent =
+    user.email || "";
+
+  await cargarPerfil(user);
+  await cargarFotoPerfilNexora(user);
+  await cargarContadores(user.uid);
+
+  escucharNotificaciones(user.uid);
+});
+
+
+// =====================================
+// NAVEGACIÓN
+// =====================================
+
+window.irInicio = function() {
+  document.getElementById("profilePanel")
+    .classList.remove("visible");
+
+  document.getElementById("searchPanel").style.display = "none";
+  document.getElementById("activityPanel").style.display = "none";
+  document.getElementById("panelRelaciones")
+    .classList.remove("visible");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+};
+
+window.proximamente = function() {
+  alert("Esta función estará disponible próximamente en NEXORA.");
+};
+
+
+// =====================================
+// FIN DE NEXORA
+// =====================================
+</script>
 </body>
 </html>
