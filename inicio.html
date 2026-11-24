@@ -40,7 +40,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
 .share-btn{line-height:1.2}
 .share-btn:active{transform:scale(.9)}
 
-/* Búsqueda */
+/* BÚSQUEDA */
 #searchPanel{display:none;position:fixed;inset:0;background:#101010;color:white;z-index:30;padding:20px 20px 80px;overflow-y:auto}
 .search-header,.profile-header,.comentarios-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
 .search-header h2,.profile-header h2{color:#00e5ff}
@@ -56,7 +56,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
 .resultado-datos strong{color:#00e5ff;display:block;margin-bottom:5px}
 .resultado-datos p{color:#aaa;font-size:13px;overflow-wrap:anywhere}
 
-/* Perfil */
+/* PERFIL */
 .profile-panel{display:none;position:fixed;inset:0;z-index:20;background:#000;padding:25px 20px 90px;overflow-y:auto}
 .profile-panel.visible{display:block}
 .profile-header{margin-bottom:30px}
@@ -75,14 +75,14 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
 .estadistica strong{display:block;font-size:20px;margin-bottom:4px;color:#00e5ff}
 .logout-btn{width:100%;padding:14px;margin-top:35px;background:#191919;border:1px solid #ff4545;border-radius:8px;color:white;font-size:16px;cursor:pointer}
 
-/* Lista de seguidores */
+/* LISTA DE SEGUIDORES */
 #panelRelaciones{display:none;position:fixed;inset:0;background:#080808;z-index:50;padding:22px;overflow-y:auto}
 #panelRelaciones.visible{display:block}
 .relacion-item{display:flex;align-items:center;gap:12px;padding:12px;margin-top:10px;background:#191919;border-radius:10px;cursor:pointer}
 .relacion-item img,.relacion-foto-vacia{width:42px;height:42px;border-radius:50%;object-fit:cover}
 .relacion-foto-vacia{display:flex;align-items:center;justify-content:center;background:#263d4b;color:#00e5ff}
 
-/* Comentarios */
+/* COMENTARIOS */
 .panel-comentarios{display:none;position:fixed;bottom:65px;left:0;width:100%;height:65%;background:#101820;color:white;z-index:999;border-radius:20px 20px 0 0;padding:20px;overflow-y:auto}
 .panel-comentarios.visible{display:block}
 .comentarios-header button{background:none;border:none;color:white;font-size:28px}
@@ -96,12 +96,90 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
 #listaComentarios p.tiene-foto::before{display:none}
 #listaComentarios strong{display:block;color:#00e5ff;margin-bottom:4px}
 #listaComentarios span{display:block;color:#eee}
+
+/* MODAL PERSONALIZADO NEXORA */
+.modal-confirmacion{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+}
+.modal-confirmacion.visible{
+  display:flex;
+}
+.modal-caja{
+  width:100%;
+  max-width:340px;
+  background:linear-gradient(160deg,#191919,#0c0c0c);
+  border:1px solid #333;
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 0 35px #0008;
+  animation:modalEntrada .2s ease;
+}
+@keyframes modalEntrada{
+  from{transform:scale(.92);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+.modal-logo{
+  font-size:23px;
+  font-weight:bold;
+  letter-spacing:3px;
+  color:#00e5ff;
+  margin-bottom:20px;
+}
+.modal-caja h3{
+  color:white;
+  font-size:19px;
+  margin-bottom:12px;
+}
+.modal-caja p{
+  color:#aaa;
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:25px;
+}
+.modal-botones{
+  display:flex;
+  gap:12px;
+}
+.modal-botones button{
+  flex:1;
+  padding:13px;
+  border-radius:10px;
+  border:none;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+}
+.modal-cancelar{
+  background:#292929;
+  color:white;
+  border:1px solid #444 !important;
+}
+.modal-aceptar{
+  background:#00e5ff;
+  color:#000;
+}
+.modal-botones button:active{
+  transform:scale(.96);
+}
 </style>
 </head>
 
 <body>
 
-<header><div class="logo">NEXORA</div><div>⌕</div></header>
+<header>
+  <div class="logo">NEXORA</div>
+  <div>⌕</div>
+</header>
 
 <main class="feed">
   <section class="post">
@@ -138,7 +216,20 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   </section>
 </main>
 
-<!-- Comentarios -->
+<!-- MODAL DE CONFIRMACIÓN -->
+<div id="modalConfirmacion" class="modal-confirmacion">
+  <div class="modal-caja">
+    <div class="modal-logo">NEXORA</div>
+    <h3 id="modalTitulo">¿Estás seguro?</h3>
+    <p id="modalMensaje">Confirma esta acción.</p>
+    <div class="modal-botones">
+      <button class="modal-cancelar" id="modalCancelar">Cancelar</button>
+      <button class="modal-aceptar" id="modalAceptar">Aceptar</button>
+    </div>
+  </div>
+</div>
+
+<!-- COMENTARIOS -->
 <div id="panelComentarios" class="panel-comentarios">
   <div class="comentarios-header">
     <h2>Comentarios</h2>
@@ -151,7 +242,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   </div>
 </div>
 
-<!-- Navegación -->
+<!-- NAVEGACIÓN -->
 <nav>
   <button onclick="irInicio()"><b>⌂</b>Inicio</button>
   <button onclick="abrirBuscar()"><b>⌕</b>Buscar</button>
@@ -160,7 +251,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   <button onclick="abrirPerfil()"><b>♙</b>Perfil</button>
 </nav>
 
-<!-- Búsqueda -->
+<!-- BÚSQUEDA -->
 <section id="searchPanel">
   <div class="search-header">
     <h2>Buscar en NEXORA</h2>
@@ -172,7 +263,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   </div>
 </section>
 
-<!-- Perfil -->
+<!-- PERFIL -->
 <section class="profile-panel" id="profilePanel">
   <div class="profile-header">
     <h2 id="tituloPerfil">Mi perfil</h2>
@@ -214,7 +305,7 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
   <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
 </section>
 
-<!-- Lista de seguidores y seguidos -->
+<!-- LISTA DE SEGUIDORES Y SEGUIDOS -->
 <section id="panelRelaciones">
   <div class="search-header">
     <h2 id="tituloRelaciones">Seguidores</h2>
@@ -262,23 +353,67 @@ const fotoPerfil = document.getElementById("fotoPerfil");
 const iconoFoto = document.getElementById("iconoFotoPerfil");
 const botones = document.querySelectorAll(".like-btn");
 
+/* CONFIRMACIÓN PERSONALIZADA */
+function confirmarNexora(titulo,mensaje) {
+  return new Promise(resolve=>{
+    const modal = document.getElementById("modalConfirmacion");
+    const tituloModal = document.getElementById("modalTitulo");
+    const mensajeModal = document.getElementById("modalMensaje");
+    const aceptar = document.getElementById("modalAceptar");
+    const cancelar = document.getElementById("modalCancelar");
+
+    tituloModal.textContent = titulo;
+    mensajeModal.textContent = mensaje;
+
+    modal.classList.add("visible");
+
+    function terminar(resultado) {
+      modal.classList.remove("visible");
+
+      aceptar.removeEventListener("click",aceptarAccion);
+      cancelar.removeEventListener("click",cancelarAccion);
+      modal.removeEventListener("click",clickFondo);
+
+      resolve(resultado);
+    }
+
+    function aceptarAccion(){
+      terminar(true);
+    }
+
+    function cancelarAccion(){
+      terminar(false);
+    }
+
+    function clickFondo(evento){
+      if(evento.target===modal){
+        terminar(false);
+      }
+    }
+
+    aceptar.addEventListener("click",aceptarAccion);
+    cancelar.addEventListener("click",cancelarAccion);
+    modal.addEventListener("click",clickFondo);
+  });
+}
+
 /* COMPARTIR PUBLICACIÓN */
-window.compartirPublicacion = async function(postId, descripcion) {
-  const url = window.location.href.split("#")[0] + "#"+postId;
+window.compartirPublicacion = async function(postId,descripcion) {
+  const url = window.location.href.split("#")[0]+"#"+postId;
 
   const datosCompartir = {
-    title: "NEXORA",
-    text: descripcion + " — Descúbrelo en NEXORA",
-    url: url
+    title:"NEXORA",
+    text:descripcion+" — Descúbrelo en NEXORA",
+    url:url
   };
 
   try {
-    if (navigator.share) {
+    if(navigator.share){
       await navigator.share(datosCompartir);
-    } else if (navigator.clipboard && window.isSecureContext) {
+    }else if(navigator.clipboard && window.isSecureContext){
       await navigator.clipboard.writeText(url);
       alert("¡Enlace copiado! Ya puedes compartirlo.");
-    } else {
+    }else{
       const campo = document.createElement("textarea");
       campo.value = url;
       document.body.appendChild(campo);
@@ -286,52 +421,55 @@ window.compartirPublicacion = async function(postId, descripcion) {
       const copiado = document.execCommand("copy");
       campo.remove();
 
-      if (copiado) {
+      if(copiado){
         alert("¡Enlace copiado! Ya puedes compartirlo.");
-      } else {
+      }else{
         prompt("Copia este enlace para compartir:",url);
       }
     }
-  } catch(error) {
-    if (error.name !== "AbortError") {
+  }catch(error){
+    if(error.name!=="AbortError"){
       console.error("Error al compartir:",error);
       alert("No se pudo compartir esta publicación.");
     }
   }
 };
 
-/* Perfil propio */
+/* PERFIL PROPIO */
 async function cargarPerfil(user) {
-  try {
+  try{
     const perfilSnap = await getDoc(doc(db,"usuarios",user.uid));
-    if (perfilSnap.exists()) {
+
+    if(perfilSnap.exists()){
       const datos = perfilSnap.data();
-      document.getElementById("nombrePerfil").textContent = "@"+(datos.nombreUsuario || "usuario");
-      document.getElementById("biografiaPerfil").textContent = datos.biografia || "";
+      document.getElementById("nombrePerfil").textContent="@"+(datos.nombreUsuario||"usuario");
+      document.getElementById("biografiaPerfil").textContent=datos.biografia||"";
     }
-  } catch(error) {
+  }catch(error){
     console.error("Error al cargar perfil:",error);
   }
 }
 
 async function cargarFotoPerfilNexora(usuario) {
-  if (!usuario) return;
-  try {
+  if(!usuario)return;
+
+  try{
     const perfil = await getDoc(doc(db,"usuarios",usuario.uid));
-    if (perfil.exists() && perfil.data().fotoPerfil) {
-      fotoPerfil.src = perfil.data().fotoPerfil;
-      fotoPerfil.style.display = "block";
-      iconoFoto.style.display = "none";
-    } else {
-      fotoPerfil.style.display = "none";
-      iconoFoto.style.display = "flex";
+
+    if(perfil.exists()&&perfil.data().fotoPerfil){
+      fotoPerfil.src=perfil.data().fotoPerfil;
+      fotoPerfil.style.display="block";
+      iconoFoto.style.display="none";
+    }else{
+      fotoPerfil.style.display="none";
+      iconoFoto.style.display="flex";
     }
-  } catch(error) {
+  }catch(error){
     console.error("Error al cargar foto:",error);
   }
 }
 
-/* Editar perfil */
+/* EDITAR PERFIL */
 const botonEditarPerfil = document.getElementById("botonEditarPerfil");
 const formularioEditarPerfil = document.getElementById("formularioEditarPerfil");
 const nuevoNombreUsuario = document.getElementById("nuevoNombreUsuario");
@@ -339,165 +477,185 @@ const nuevaBiografia = document.getElementById("nuevaBiografia");
 const guardarPerfil = document.getElementById("guardarPerfil");
 
 botonEditarPerfil.addEventListener("click",()=>{
-  nuevoNombreUsuario.value = document.getElementById("nombrePerfil").textContent.replace(/^@/,"");
-  nuevaBiografia.value = document.getElementById("biografiaPerfil").textContent;
-  formularioEditarPerfil.style.display = "block";
+  nuevoNombreUsuario.value=document.getElementById("nombrePerfil").textContent.replace(/^@/,"");
+  nuevaBiografia.value=document.getElementById("biografiaPerfil").textContent;
+  formularioEditarPerfil.style.display="block";
 });
 
 document.getElementById("cancelarEdicion").addEventListener("click",()=>{
-  formularioEditarPerfil.style.display = "none";
+  formularioEditarPerfil.style.display="none";
 });
 
 guardarPerfil.addEventListener("click",async()=>{
-  if (!usuarioActual) return;
-  const nombre = nuevoNombreUsuario.value.trim().replace(/^@/,"");
-  const bio = nuevaBiografia.value.trim();
+  if(!usuarioActual)return;
 
-  if (!nombre) {
+  const nombre=nuevoNombreUsuario.value.trim().replace(/^@/,"");
+  const bio=nuevaBiografia.value.trim();
+
+  if(!nombre){
     alert("Escribe un nombre de usuario.");
     return;
   }
 
-  guardarPerfil.disabled = true;
-  try {
+  guardarPerfil.disabled=true;
+
+  try{
     await setDoc(doc(db,"usuarios",usuarioActual.uid),{
       nombreUsuario:nombre,
       biografia:bio
     },{merge:true});
 
-    document.getElementById("nombrePerfil").textContent = "@"+nombre;
-    document.getElementById("biografiaPerfil").textContent = bio;
-    formularioEditarPerfil.style.display = "none";
+    document.getElementById("nombrePerfil").textContent="@"+nombre;
+    document.getElementById("biografiaPerfil").textContent=bio;
+    formularioEditarPerfil.style.display="none";
+
     alert("¡Perfil actualizado!");
-  } catch(error) {
+  }catch(error){
     console.error(error);
     alert("No se pudo actualizar el perfil.");
-  } finally {
-    guardarPerfil.disabled = false;
+  }finally{
+    guardarPerfil.disabled=false;
   }
 });
 
-/* Videos */
-const videos = document.querySelectorAll(".video-real");
+/* VIDEOS */
+const videos=document.querySelectorAll(".video-real");
+
 videos.forEach(video=>{
   video.addEventListener("click",()=>{
-    if (video.paused) video.play();
+    if(video.paused)video.play();
     else video.pause();
   });
 });
 
-const observer = new IntersectionObserver(entries=>{
+const observer=new IntersectionObserver(entries=>{
   entries.forEach(entry=>{
-    if (entry.isIntersecting) entry.target.play().catch(()=>{});
+    if(entry.isIntersecting)entry.target.play().catch(()=>{});
     else entry.target.pause();
   });
 },{threshold:0.6});
+
 videos.forEach(video=>observer.observe(video));
 
-/* Likes */
+/* LIKES */
 botones.forEach(button=>button.disabled=true);
 
 async function darLike(button) {
-  if (!usuarioActual || button.disabled) return;
-  const postId = button.dataset.postId;
-  const userId = usuarioActual.uid;
-  const referencia = doc(db,"publicaciones",postId,"likes",userId);
-  button.disabled = true;
+  if(!usuarioActual||button.disabled)return;
 
-  try {
-    if (button.dataset.liked === "true") await deleteDoc(referencia);
-    else await setDoc(referencia,{uid:userId,createdAt:serverTimestamp()});
-  } catch(error) {
+  const postId=button.dataset.postId;
+  const userId=usuarioActual.uid;
+  const referencia=doc(db,"publicaciones",postId,"likes",userId);
+
+  button.disabled=true;
+
+  try{
+    if(button.dataset.liked==="true"){
+      await deleteDoc(referencia);
+    }else{
+      await setDoc(referencia,{
+        uid:userId,
+        createdAt:serverTimestamp()
+      });
+    }
+  }catch(error){
     console.error(error);
     alert("No se pudo guardar el Me gusta.");
-  } finally {
-    button.disabled = false;
+  }finally{
+    button.disabled=false;
   }
 }
-window.darLike = darLike;
 
-/* Comentarios */
-window.abrirComentarios = function(postId) {
-  publicacionActual = postId;
-  const panel = document.getElementById("panelComentarios");
-  const lista = document.getElementById("listaComentarios");
+window.darLike=darLike;
+
+/* COMENTARIOS */
+window.abrirComentarios=function(postId) {
+  publicacionActual=postId;
+
+  const panel=document.getElementById("panelComentarios");
+  const lista=document.getElementById("listaComentarios");
+
   panel.classList.add("visible");
-  lista.textContent = "Cargando comentarios...";
+  lista.textContent="Cargando comentarios...";
 
-  if (detenerComentarios) detenerComentarios();
+  if(detenerComentarios)detenerComentarios();
 
-  const comentariosRef = collection(db,"publicaciones",postId,"comentarios");
-  const consulta = query(comentariosRef,orderBy("createdAt","asc"));
+  const comentariosRef=collection(db,"publicaciones",postId,"comentarios");
+  const consulta=query(comentariosRef,orderBy("createdAt","asc"));
 
-  detenerComentarios = onSnapshot(consulta,snapshot=>{
-    lista.innerHTML = "";
+  detenerComentarios=onSnapshot(consulta,snapshot=>{
+    lista.innerHTML="";
 
-    const boton = [...document.querySelectorAll(".comment-btn")].find(b=>
-      b.getAttribute("onclick") === "abrirComentarios('"+postId+"')"
+    const boton=[...document.querySelectorAll(".comment-btn")].find(b=>
+      b.getAttribute("onclick")==="abrirComentarios('"+postId+"')"
     );
-    if (boton) boton.querySelector("small").textContent = snapshot.size;
 
-    if (snapshot.empty) {
-      lista.textContent = "Todavía no hay comentarios.";
+    if(boton)boton.querySelector("small").textContent=snapshot.size;
+
+    if(snapshot.empty){
+      lista.textContent="Todavía no hay comentarios.";
       return;
     }
 
     snapshot.forEach(documento=>{
-      const comentario = documento.data();
-      const elemento = document.createElement("p");
-      const nombre = document.createElement("strong");
-      const texto = document.createElement("span");
-      const foto = document.createElement("img");
+      const comentario=documento.data();
+      const elemento=document.createElement("p");
+      const nombre=document.createElement("strong");
+      const texto=document.createElement("span");
+      const foto=document.createElement("img");
 
-      foto.className = "foto-comentario";
-      foto.alt = "Foto de perfil";
-      foto.style.display = "none";
+      foto.className="foto-comentario";
+      foto.alt="Foto de perfil";
+      foto.style.display="none";
 
-      if (comentario.uid) {
+      if(comentario.uid){
         getDoc(doc(db,"usuarios",comentario.uid)).then(perfil=>{
-          if (perfil.exists() && perfil.data().fotoPerfil) {
-            foto.src = perfil.data().fotoPerfil;
-            foto.style.display = "block";
+          if(perfil.exists()&&perfil.data().fotoPerfil){
+            foto.src=perfil.data().fotoPerfil;
+            foto.style.display="block";
             elemento.classList.add("tiene-foto");
           }
         }).catch(console.error);
       }
 
-      nombre.textContent = "@"+(comentario.nombreUsuario || "usuario")+": ";
-      texto.textContent = comentario.texto || "";
+      nombre.textContent="@"+(comentario.nombreUsuario||"usuario")+": ";
+      texto.textContent=comentario.texto||"";
+
       elemento.append(foto,nombre,texto);
       lista.appendChild(elemento);
     });
   },error=>{
     console.error(error);
-    lista.textContent = "No se pudieron cargar los comentarios.";
+    lista.textContent="No se pudieron cargar los comentarios.";
   });
 };
 
-window.cerrarComentarios = function() {
+window.cerrarComentarios=function() {
   document.getElementById("panelComentarios").classList.remove("visible");
-  if (detenerComentarios) {
+
+  if(detenerComentarios){
     detenerComentarios();
-    detenerComentarios = null;
+    detenerComentarios=null;
   }
 };
 
-window.enviarComentario = async function() {
-  if (!usuarioActual || !publicacionActual) {
+window.enviarComentario=async function() {
+  if(!usuarioActual||!publicacionActual){
     alert("Inicia sesión para comentar.");
     return;
   }
 
-  const campo = document.getElementById("textoComentario");
-  const texto = campo.value.trim();
-  if (!texto) {
+  const campo=document.getElementById("textoComentario");
+  const texto=campo.value.trim();
+
+  if(!texto){
     alert("Escribe un comentario.");
     return;
   }
 
-  try {
-    const perfil = await getDoc(doc(db,"usuarios",usuarioActual.uid));
-    const nombreUsuario = perfil.exists() ? perfil.data().nombreUsuario : "usuario";
+  try{
+    const perfil=await getDoc(doc(db,"usuarios",usuarioActual.uid));
+    const nombreUsuario=perfil.exists()?perfil.data().nombreUsuario:"usuario";
 
     await addDoc(collection(db,"publicaciones",publicacionActual,"comentarios"),{
       uid:usuarioActual.uid,
@@ -505,59 +663,64 @@ window.enviarComentario = async function() {
       texto:texto,
       createdAt:serverTimestamp()
     });
-    campo.value = "";
-  } catch(error) {
+
+    campo.value="";
+  }catch(error){
     console.error(error);
     alert("No se pudo enviar el comentario.");
   }
 };
 
-/* Buscador */
-const campoBuscarUsuario = document.getElementById("buscarUsuario");
-const resultadosBusqueda = document.getElementById("resultadosBusqueda");
+/* BUSCADOR */
+const campoBuscarUsuario=document.getElementById("buscarUsuario");
+const resultadosBusqueda=document.getElementById("resultadosBusqueda");
 
 function mostrarResultadosBusqueda() {
-  const termino = campoBuscarUsuario.value.trim().toLowerCase();
-  resultadosBusqueda.innerHTML = "";
+  const termino=campoBuscarUsuario.value.trim().toLowerCase();
 
-  if (!termino) {
-    resultadosBusqueda.textContent = "Escribe un nombre para buscar usuarios.";
+  resultadosBusqueda.innerHTML="";
+
+  if(!termino){
+    resultadosBusqueda.textContent="Escribe un nombre para buscar usuarios.";
     return;
   }
 
-  const coincidencias = usuariosBusqueda.filter(perfil=>
-    (perfil.nombreUsuario || "").toLowerCase().includes(termino) &&
-    perfil.uid !== usuarioActual?.uid
+  const coincidencias=usuariosBusqueda.filter(perfil=>
+    (perfil.nombreUsuario||"").toLowerCase().includes(termino)&&
+    perfil.uid!==usuarioActual?.uid
   );
 
-  if (!coincidencias.length) {
-    resultadosBusqueda.textContent = "No se encontraron usuarios.";
+  if(!coincidencias.length){
+    resultadosBusqueda.textContent="No se encontraron usuarios.";
     return;
   }
 
   coincidencias.forEach(perfil=>{
-    const tarjeta = document.createElement("div");
-    tarjeta.className = "resultado-usuario";
+    const tarjeta=document.createElement("div");
+    tarjeta.className="resultado-usuario";
 
-    if (perfil.fotoPerfil) {
-      const foto = document.createElement("img");
-      foto.className = "resultado-foto";
-      foto.src = perfil.fotoPerfil;
-      foto.alt = "Foto de perfil";
+    if(perfil.fotoPerfil){
+      const foto=document.createElement("img");
+      foto.className="resultado-foto";
+      foto.src=perfil.fotoPerfil;
+      foto.alt="Foto de perfil";
       tarjeta.appendChild(foto);
-    } else {
-      const foto = document.createElement("div");
-      foto.className = "resultado-foto-vacia";
-      foto.textContent = "♙";
+    }else{
+      const foto=document.createElement("div");
+      foto.className="resultado-foto-vacia";
+      foto.textContent="♙";
       tarjeta.appendChild(foto);
     }
 
-    const datos = document.createElement("div");
-    datos.className = "resultado-datos";
-    const nombre = document.createElement("strong");
-    nombre.textContent = "@"+(perfil.nombreUsuario || "usuario");
-    const bio = document.createElement("p");
-    bio.textContent = perfil.biografia || "";
+    const datos=document.createElement("div");
+    datos.className="resultado-datos";
+
+    const nombre=document.createElement("strong");
+    nombre.textContent="@"+(perfil.nombreUsuario||"usuario");
+
+    const bio=document.createElement("p");
+    bio.textContent=perfil.biografia||"";
+
     datos.append(nombre,bio);
     tarjeta.appendChild(datos);
 
@@ -572,249 +735,266 @@ function mostrarResultadosBusqueda() {
 
 campoBuscarUsuario.addEventListener("input",mostrarResultadosBusqueda);
 
-window.abrirBuscar = function() {
+window.abrirBuscar=function() {
   document.getElementById("profilePanel").classList.remove("visible");
-  document.getElementById("searchPanel").style.display = "block";
+  document.getElementById("searchPanel").style.display="block";
 
-  if (!detenerBusquedaUsuarios) {
-    resultadosBusqueda.textContent = "Cargando usuarios...";
-    detenerBusquedaUsuarios = onSnapshot(collection(db,"usuarios"),snapshot=>{
-      usuariosBusqueda = snapshot.docs.map(documento=>({
+  if(!detenerBusquedaUsuarios){
+    resultadosBusqueda.textContent="Cargando usuarios...";
+
+    detenerBusquedaUsuarios=onSnapshot(collection(db,"usuarios"),snapshot=>{
+      usuariosBusqueda=snapshot.docs.map(documento=>({
         uid:documento.id,
         ...documento.data()
       }));
+
       mostrarResultadosBusqueda();
     },error=>{
       console.error(error);
-      resultadosBusqueda.textContent = "No se pudieron cargar los usuarios.";
+      resultadosBusqueda.textContent="No se pudieron cargar los usuarios.";
     });
-  } else {
+  }else{
     mostrarResultadosBusqueda();
   }
 };
 
-window.cerrarBuscar = function() {
-  document.getElementById("searchPanel").style.display = "none";
+window.cerrarBuscar=function() {
+  document.getElementById("searchPanel").style.display="none";
 };
 
-/* Limpiar escuchas del perfil */
+/* LIMPIAR ESCUCHAS DEL PERFIL */
 function limpiarEscuchasPerfil() {
-  if (detenerSeguimiento) detenerSeguimiento();
-  if (detenerContadorSeguidores) detenerContadorSeguidores();
-  if (detenerContadorSeguidos) detenerContadorSeguidos();
+  if(detenerSeguimiento)detenerSeguimiento();
+  if(detenerContadorSeguidores)detenerContadorSeguidores();
+  if(detenerContadorSeguidos)detenerContadorSeguidos();
 
-  detenerSeguimiento = null;
-  detenerContadorSeguidores = null;
-  detenerContadorSeguidos = null;
+  detenerSeguimiento=null;
+  detenerContadorSeguidores=null;
+  detenerContadorSeguidos=null;
 }
 
-/* Abrir perfil propio */
-window.abrirPerfil = async function() {
-  if (!usuarioActual) return;
+/* ABRIR PERFIL PROPIO */
+window.abrirPerfil=async function() {
+  if(!usuarioActual)return;
   await abrirPerfilUsuario(usuarioActual.uid);
 };
 
-/* Abrir perfil de cualquier usuario */
+/* ABRIR PERFIL DE CUALQUIER USUARIO */
 async function abrirPerfilUsuario(uid) {
-  if (!usuarioActual || !uid) return;
+  if(!usuarioActual||!uid)return;
 
   limpiarEscuchasPerfil();
-  perfilAbiertoUid = uid;
+  perfilAbiertoUid=uid;
 
-  const esMiPerfil = uid === usuarioActual.uid;
-  const panel = document.getElementById("profilePanel");
+  const esMiPerfil=uid===usuarioActual.uid;
+  const panel=document.getElementById("profilePanel");
 
-  document.getElementById("tituloPerfil").textContent =
-    esMiPerfil ? "Mi perfil" : "Perfil";
+  document.getElementById("tituloPerfil").textContent=
+    esMiPerfil?"Mi perfil":"Perfil";
 
-  document.getElementById("botonEditarPerfil").style.display =
-    esMiPerfil ? "inline-block" : "none";
+  document.getElementById("botonEditarPerfil").style.display=
+    esMiPerfil?"inline-block":"none";
 
-  document.getElementById("botonCambiarFoto").style.display =
-    esMiPerfil ? "inline-block" : "none";
+  document.getElementById("botonCambiarFoto").style.display=
+    esMiPerfil?"inline-block":"none";
 
-  document.getElementById("selectorFotoPerfil").style.display = "none";
-  document.getElementById("logoutBtn").style.display =
-    esMiPerfil ? "block" : "none";
+  document.getElementById("selectorFotoPerfil").style.display="none";
 
-  document.getElementById("correoUsuario").style.display =
-    esMiPerfil ? "block" : "none";
+  document.getElementById("logoutBtn").style.display=
+    esMiPerfil?"block":"none";
 
-  document.getElementById("botonSeguir").style.display =
-    esMiPerfil ? "none" : "inline-block";
+  document.getElementById("correoUsuario").style.display=
+    esMiPerfil?"block":"none";
 
-  formularioEditarPerfil.style.display = "none";
-  document.getElementById("nombrePerfil").textContent = "Cargando...";
-  document.getElementById("biografiaPerfil").textContent = "";
-  fotoPerfil.style.display = "none";
-  iconoFoto.style.display = "flex";
+  document.getElementById("botonSeguir").style.display=
+    esMiPerfil?"none":"inline-block";
+
+  formularioEditarPerfil.style.display="none";
+
+  document.getElementById("nombrePerfil").textContent="Cargando...";
+  document.getElementById("biografiaPerfil").textContent="";
+
+  fotoPerfil.style.display="none";
+  iconoFoto.style.display="flex";
 
   panel.classList.add("visible");
 
-  try {
-    const perfilSnap = await getDoc(doc(db,"usuarios",uid));
+  try{
+    const perfilSnap=await getDoc(doc(db,"usuarios",uid));
 
-    if (!perfilSnap.exists()) {
-      document.getElementById("nombrePerfil").textContent = "@usuario";
-      document.getElementById("biografiaPerfil").textContent = "Este perfil no está disponible.";
+    if(!perfilSnap.exists()){
+      document.getElementById("nombrePerfil").textContent="@usuario";
+      document.getElementById("biografiaPerfil").textContent="Este perfil no está disponible.";
       return;
     }
 
-    const datos = perfilSnap.data();
+    const datos=perfilSnap.data();
 
-    document.getElementById("nombrePerfil").textContent =
-      "@"+(datos.nombreUsuario || "usuario");
+    document.getElementById("nombrePerfil").textContent=
+      "@"+(datos.nombreUsuario||"usuario");
 
-    document.getElementById("biografiaPerfil").textContent =
-      datos.biografia || "";
+    document.getElementById("biografiaPerfil").textContent=
+      datos.biografia||"";
 
-    if (datos.fotoPerfil) {
-      fotoPerfil.src = datos.fotoPerfil;
-      fotoPerfil.style.display = "block";
-      iconoFoto.style.display = "none";
+    if(datos.fotoPerfil){
+      fotoPerfil.src=datos.fotoPerfil;
+      fotoPerfil.style.display="block";
+      iconoFoto.style.display="none";
     }
 
-    if (esMiPerfil) {
-      document.getElementById("correoUsuario").textContent =
-        usuarioActual.email || "Cuenta de Google";
+    if(esMiPerfil){
+      document.getElementById("correoUsuario").textContent=
+        usuarioActual.email||"Cuenta de Google";
     }
 
     activarContadores(uid);
 
-    if (!esMiPerfil) activarBotonSeguimiento(uid);
+    if(!esMiPerfil)activarBotonSeguimiento(uid);
 
-  } catch(error) {
+  }catch(error){
     console.error("Error al abrir perfil:",error);
     alert("No se pudo abrir este perfil.");
   }
 }
 
-/* Contadores en tiempo real */
+/* CONTADORES EN TIEMPO REAL */
 function activarContadores(uid) {
-  const seguidoresQuery = query(
+  const seguidoresQuery=query(
     collection(db,"seguimientos"),
     where("seguidoUid","==",uid)
   );
 
-  const seguidosQuery = query(
+  const seguidosQuery=query(
     collection(db,"seguimientos"),
     where("seguidorUid","==",uid)
   );
 
-  detenerContadorSeguidores = onSnapshot(seguidoresQuery,snapshot=>{
-    document.getElementById("totalSeguidores").textContent = snapshot.size;
+  detenerContadorSeguidores=onSnapshot(seguidoresQuery,snapshot=>{
+    document.getElementById("totalSeguidores").textContent=snapshot.size;
   },console.error);
 
-  detenerContadorSeguidos = onSnapshot(seguidosQuery,snapshot=>{
-    document.getElementById("totalSeguidos").textContent = snapshot.size;
+  detenerContadorSeguidos=onSnapshot(seguidosQuery,snapshot=>{
+    document.getElementById("totalSeguidos").textContent=snapshot.size;
   },console.error);
 }
 
-/* Seguir y dejar de seguir */
+/* SEGUIR Y DEJAR DE SEGUIR */
 function activarBotonSeguimiento(uid) {
-  const boton = document.getElementById("botonSeguir");
-  const relacionId = usuarioActual.uid+"_"+uid;
-  const relacionRef = doc(db,"seguimientos",relacionId);
+  const boton=document.getElementById("botonSeguir");
+  const relacionId=usuarioActual.uid+"_"+uid;
+  const relacionRef=doc(db,"seguimientos",relacionId);
 
-  boton.disabled = true;
-  boton.textContent = "Cargando...";
+  boton.disabled=true;
+  boton.textContent="Cargando...";
 
-  detenerSeguimiento = onSnapshot(relacionRef,snapshot=>{
-    const siguiendo = snapshot.exists();
+  detenerSeguimiento=onSnapshot(relacionRef,snapshot=>{
+    const siguiendo=snapshot.exists();
 
-    boton.textContent = siguiendo ? "Siguiendo" : "Seguir";
+    boton.textContent=siguiendo?"Siguiendo":"Seguir";
     boton.classList.toggle("siguiendo",siguiendo);
-    boton.disabled = false;
+    boton.disabled=false;
   },error=>{
     console.error("Error al consultar seguimiento:",error);
-    boton.textContent = "No disponible";
-    boton.disabled = true;
+    boton.textContent="No disponible";
+    boton.disabled=true;
   });
 
-  boton.onclick = async()=>{
-    if (!usuarioActual || usuarioActual.uid === uid) return;
+  boton.onclick=async()=>{
+    if(!usuarioActual||usuarioActual.uid===uid)return;
 
-    boton.disabled = true;
+    boton.disabled=true;
 
-    try {
-      const estado = await getDoc(relacionRef);
+    try{
+      const estado=await getDoc(relacionRef);
 
-      if (estado.exists()) {
-        const confirmar = confirm("¿Quieres dejar de seguir a este usuario?");
-        if (confirmar) await deleteDoc(relacionRef);
-      } else {
+      if(estado.exists()){
+        const confirmar=await confirmarNexora(
+          "Dejar de seguir",
+          "¿Quieres dejar de seguir a este usuario?"
+        );
+
+        if(confirmar){
+          await deleteDoc(relacionRef);
+        }
+      }else{
         await setDoc(relacionRef,{
           seguidorUid:usuarioActual.uid,
           seguidoUid:uid,
           createdAt:serverTimestamp()
         });
       }
-    } catch(error) {
+    }catch(error){
       console.error("Error al cambiar seguimiento:",error);
       alert("No se pudo actualizar el seguimiento.");
-    } finally {
-      boton.disabled = false;
+    }finally{
+      boton.disabled=false;
     }
   };
 }
 
-/* Mostrar listas de seguidores y seguidos */
-window.mostrarRelaciones = async function(tipo) {
-  if (!perfilAbiertoUid) return;
+/* MOSTRAR LISTAS DE SEGUIDORES Y SEGUIDOS */
+window.mostrarRelaciones=async function(tipo) {
+  if(!perfilAbiertoUid)return;
 
-  const panel = document.getElementById("panelRelaciones");
-  const lista = document.getElementById("listaRelaciones");
-  const titulo = document.getElementById("tituloRelaciones");
+  const panel=document.getElementById("panelRelaciones");
+  const lista=document.getElementById("listaRelaciones");
+  const titulo=document.getElementById("tituloRelaciones");
 
-  const esSeguidores = tipo === "seguidores";
-  titulo.textContent = esSeguidores ? "Seguidores" : "Siguiendo";
-  lista.textContent = "Cargando...";
+  const esSeguidores=tipo==="seguidores";
+
+  titulo.textContent=esSeguidores?"Seguidores":"Siguiendo";
+  lista.textContent="Cargando...";
   panel.classList.add("visible");
 
-  try {
-    const campo = esSeguidores ? "seguidoUid" : "seguidorUid";
-    const consulta = query(
+  try{
+    const campo=esSeguidores?"seguidoUid":"seguidorUid";
+
+    const consulta=query(
       collection(db,"seguimientos"),
       where(campo,"==",perfilAbiertoUid)
     );
 
-    const resultados = await getDocs(consulta);
-    lista.innerHTML = "";
+    const resultados=await getDocs(consulta);
+    lista.innerHTML="";
 
-    if (resultados.empty) {
-      lista.textContent = esSeguidores
-        ? "Todavía no tiene seguidores."
-        : "Todavía no sigue a nadie.";
+    if(resultados.empty){
+      lista.textContent=esSeguidores
+        ?"Todavía no tiene seguidores."
+        :"Todavía no sigue a nadie.";
       return;
     }
 
-    for (const relacion of resultados.docs) {
-      const datosRelacion = relacion.data();
-      const otroUid = esSeguidores
-        ? datosRelacion.seguidorUid
-        : datosRelacion.seguidoUid;
+    for(const relacion of resultados.docs){
+      const datosRelacion=relacion.data();
 
-      const usuarioSnap = await getDoc(doc(db,"usuarios",otroUid));
-      if (!usuarioSnap.exists()) continue;
+      const otroUid=esSeguidores
+        ?datosRelacion.seguidorUid
+        :datosRelacion.seguidoUid;
 
-      const perfil = usuarioSnap.data();
-      const item = document.createElement("div");
-      item.className = "relacion-item";
+      const usuarioSnap=await getDoc(doc(db,"usuarios",otroUid));
 
-      if (perfil.fotoPerfil) {
-        const img = document.createElement("img");
-        img.src = perfil.fotoPerfil;
-        img.alt = "Foto de perfil";
+      if(!usuarioSnap.exists())continue;
+
+      const perfil=usuarioSnap.data();
+      const item=document.createElement("div");
+
+      item.className="relacion-item";
+
+      if(perfil.fotoPerfil){
+        const img=document.createElement("img");
+        img.src=perfil.fotoPerfil;
+        img.alt="Foto de perfil";
         item.appendChild(img);
-      } else {
-        const vacia = document.createElement("div");
-        vacia.className = "relacion-foto-vacia";
-        vacia.textContent = "♙";
+      }else{
+        const vacia=document.createElement("div");
+        vacia.className="relacion-foto-vacia";
+        vacia.textContent="♙";
         item.appendChild(vacia);
       }
 
-      const nombre = document.createElement("strong");
-      nombre.textContent = "@"+(perfil.nombreUsuario || "usuario");
+      const nombre=document.createElement("strong");
+      nombre.textContent="@"+(perfil.nombreUsuario||"usuario");
+
       item.appendChild(nombre);
 
       item.addEventListener("click",async()=>{
@@ -824,121 +1004,139 @@ window.mostrarRelaciones = async function(tipo) {
 
       lista.appendChild(item);
     }
-  } catch(error) {
+  }catch(error){
     console.error("Error al cargar la lista:",error);
-    lista.textContent = "No se pudo cargar la lista.";
+    lista.textContent="No se pudo cargar la lista.";
   }
 };
 
-window.cerrarRelaciones = function() {
+window.cerrarRelaciones=function() {
   document.getElementById("panelRelaciones").classList.remove("visible");
 };
 
-window.cerrarPerfil = function() {
+window.cerrarPerfil=function() {
   document.getElementById("profilePanel").classList.remove("visible");
   limpiarEscuchasPerfil();
-  perfilAbiertoUid = null;
+  perfilAbiertoUid=null;
 };
 
-/* Cambiar foto */
-const selectorFoto = document.getElementById("selectorFotoPerfil");
+/* CAMBIAR FOTO */
+const selectorFoto=document.getElementById("selectorFotoPerfil");
 
 selectorFoto.addEventListener("change",function() {
-  const archivo = selectorFoto.files[0];
-  if (!archivo) return;
+  const archivo=selectorFoto.files[0];
 
-  if (!archivo.type.startsWith("image/")) {
+  if(!archivo)return;
+
+  if(!archivo.type.startsWith("image/")){
     alert("Selecciona una imagen válida.");
     return;
   }
 
-  if (!usuarioActual) return;
+  if(!usuarioActual)return;
 
-  const imagen = new Image();
-  const lector = new FileReader();
+  const imagen=new Image();
+  const lector=new FileReader();
 
-  lector.onload = function() {
-    imagen.onload = async function() {
-      const canvas = document.createElement("canvas");
-      const tamaño = 256;
-      canvas.width = tamaño;
-      canvas.height = tamaño;
+  lector.onload=function(){
+    imagen.onload=async function(){
+      const canvas=document.createElement("canvas");
+      const tamaño=256;
 
-      const contexto = canvas.getContext("2d");
-      const escala = Math.min(tamaño/imagen.width,tamaño/imagen.height);
-      const ancho = imagen.width*escala;
-      const alto = imagen.height*escala;
+      canvas.width=tamaño;
+      canvas.height=tamaño;
 
-      contexto.drawImage(imagen,(tamaño-ancho)/2,(tamaño-alto)/2,ancho,alto);
+      const contexto=canvas.getContext("2d");
 
-      const fotoComprimida = canvas.toDataURL("image/jpeg",0.65);
+      const escala=Math.min(
+        tamaño/imagen.width,
+        tamaño/imagen.height
+      );
 
-      if (fotoComprimida.length > 700000) {
+      const ancho=imagen.width*escala;
+      const alto=imagen.height*escala;
+
+      contexto.drawImage(
+        imagen,
+        (tamaño-ancho)/2,
+        (tamaño-alto)/2,
+        ancho,
+        alto
+      );
+
+      const fotoComprimida=canvas.toDataURL("image/jpeg",0.65);
+
+      if(fotoComprimida.length>700000){
         alert("La imagen sigue siendo demasiado grande. Elige otra foto.");
         return;
       }
 
-      try {
+      try{
         await setDoc(doc(db,"usuarios",usuarioActual.uid),{
           fotoPerfil:fotoComprimida
         },{merge:true});
 
-        fotoPerfil.src = fotoComprimida;
-        fotoPerfil.style.display = "block";
-        iconoFoto.style.display = "none";
+        fotoPerfil.src=fotoComprimida;
+        fotoPerfil.style.display="block";
+        iconoFoto.style.display="none";
+
         alert("¡Foto de perfil guardada!");
-      } catch(error) {
+      }catch(error){
         console.error(error);
         alert("No se pudo guardar la foto.");
       }
     };
 
-    imagen.onerror = ()=>alert("No se pudo abrir esa imagen.");
-    imagen.src = lector.result;
+    imagen.onerror=()=>alert("No se pudo abrir esa imagen.");
+    imagen.src=lector.result;
   };
 
   lector.readAsDataURL(archivo);
 });
 
-/* Sesión y likes */
+/* SESIÓN Y LIKES */
 onAuthStateChanged(auth,user=>{
-  if (!user) {
-    window.location.href = "login.html";
+  if(!user){
+    window.location.href="login.html";
     return;
   }
 
-  usuarioActual = user;
+  usuarioActual=user;
 
   cargarPerfil(user);
   cargarFotoPerfilNexora(user);
 
   botones.forEach(button=>{
-    const postId = button.dataset.postId;
-    const likesRef = collection(db,"publicaciones",postId,"likes");
+    const postId=button.dataset.postId;
+    const likesRef=collection(db,"publicaciones",postId,"likes");
 
     onSnapshot(likesRef,snapshot=>{
-      const total = snapshot.size;
-      const miLike = snapshot.docs.some(documento=>documento.id===user.uid);
+      const total=snapshot.size;
 
-      button.dataset.liked = miLike ? "true" : "false";
-      button.querySelector("small").textContent = total;
-      button.firstChild.textContent = miLike ? "♥ " : "♡ ";
-      button.style.color = miLike ? "#ff2d55" : "white";
-      button.disabled = false;
+      const miLike=snapshot.docs.some(documento=>
+        documento.id===user.uid
+      );
+
+      button.dataset.liked=miLike?"true":"false";
+      button.querySelector("small").textContent=total;
+      button.firstChild.textContent=miLike?"♥ ":"♡ ";
+      button.style.color=miLike?"#ff2d55":"white";
+      button.disabled=false;
     },error=>{
       console.error("Error al leer likes:",error);
-      button.disabled = true;
+      button.disabled=true;
     });
   });
 });
 
-/* Inicio */
-window.irInicio = function() {
+/* INICIO */
+window.irInicio=function() {
   document.getElementById("profilePanel").classList.remove("visible");
-  document.getElementById("searchPanel").style.display = "none";
+  document.getElementById("searchPanel").style.display="none";
   document.getElementById("panelRelaciones").classList.remove("visible");
+
   limpiarEscuchasPerfil();
-  perfilAbiertoUid = null;
+  perfilAbiertoUid=null;
 
   document.querySelector(".feed").scrollTo({
     top:0,
@@ -946,24 +1144,29 @@ window.irInicio = function() {
   });
 };
 
-/* Cerrar sesión */
+/* CERRAR SESIÓN CON MODAL NEXORA */
 document.getElementById("logoutBtn").addEventListener("click",async()=>{
-  if (!confirm("¿Seguro que quieres cerrar sesión?")) return;
+  const confirmar=await confirmarNexora(
+    "Cerrar sesión",
+    "¿Seguro que quieres cerrar tu sesión de NEXORA?"
+  );
 
-  try {
+  if(!confirmar)return;
+
+  try{
     await signOut(auth);
-    window.location.href = "login.html";
-  } catch(error) {
+    window.location.href="login.html";
+  }catch(error){
     console.error(error);
     alert("No se pudo cerrar la sesión.");
   }
 });
 
-window.proximamente = function() {
+/* FUNCIONES PRÓXIMAMENTE */
+window.proximamente=function() {
   alert("Esta función de NEXORA todavía está en desarrollo.");
 };
 </script>
 
 </body>
 </html>
-
