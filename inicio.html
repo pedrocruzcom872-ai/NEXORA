@@ -318,7 +318,7 @@ async function activarNotificaciones() {
     }
 
     const registroSW = await navigator.serviceWorker.register(
-      "./firebase-messaging-sw.js"
+      "./service-worker.js"
     );
 
     const token = await getToken(messaging, {
