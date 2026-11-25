@@ -262,6 +262,12 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 
+  import {
+  getMessaging,
+  getToken,
+  onMessage
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging.js";
+
 import {
   getAuth,onAuthStateChanged,signOut
 } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
@@ -283,6 +289,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const messaging = getMessaging(app);
 
 let usuarioActual = null;
 let publicacionActual = null;
