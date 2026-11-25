@@ -291,6 +291,37 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const messaging = getMessaging(app);
 
+async function activarNotificaciones() {
+
+  try {
+
+    const permiso = await Notification.requestPermission();
+
+    if (permiso !== "granted") {
+      console.log("Permiso de notificaciones no concedido");
+      return;
+    }
+
+    const registroSW = await navigator.serviceWorker.register(
+      "./firebase-messaging-sw.js"
+    );
+
+    const token = await getToken(messaging, {
+      8",
+      serviceWorkerRegistration: registroSW
+    });
+
+    if (token) {
+      console.log("Notificaciones activadas");
+      console.log(token);
+    }
+
+  } catch (error) {
+    console.error("Error al activar notificaciones:", error);
+  }
+
+}
+
 let usuarioActual = null;
 let publicacionActual = null;
 let detenerComentarios = null;
