@@ -194,6 +194,13 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
     <h2>Actividad</h2>
     <button class="close-search" onclick="cerrarActividad()">×</button>
   </div>
+  <button
+  id="activarNotificacionesBtn"
+  onclick="activarNotificaciones()"
+  style="background:#00e5ff;color:#000;padding:12px;border:0;border-radius:10px;margin-bottom:18px;font-weight:bold;"
+>
+  🔔 Activar notificaciones
+</button>
   <div id="listaActividad">Tus notificaciones aparecerán aquí.</div>
 </section>
 
@@ -292,13 +299,21 @@ const db = getFirestore(app);
 const messaging = getMessaging(app);
 
 async function activarNotificaciones() {
-
   try {
+    if (!("Notification" in window)) {
+      alert("Este navegador no admite notificaciones.");
+      return;
+    }
+
+    if (!("serviceWorker" in navigator)) {
+      alert("Este navegador no admite Service Workers.");
+      return;
+    }
 
     const permiso = await Notification.requestPermission();
 
     if (permiso !== "granted") {
-      console.log("Permiso de notificaciones no concedido");
+      alert("No se concedió el permiso para las notificaciones.");
       return;
     }
 
@@ -307,20 +322,26 @@ async function activarNotificaciones() {
     );
 
     const token = await getToken(messaging, {
-      8",
+      vapidKey: "BIAVyEHxEUleD0MHT_229oa-ZUl1eFxZPvenEPPfDlNQod8sm0LPb91NFDcTRrROCD_8tZWRSUBVeRtt1XKOkJ4",
       serviceWorkerRegistration: registroSW
     });
 
     if (token) {
-      console.log("Notificaciones activadas");
-      console.log(token);
+      console.log("Notificaciones activadas correctamente.");
+      alert("¡Notificaciones activadas en NEXORA!");
+    } else {
+      alert("No se pudo obtener el registro de notificaciones.");
     }
 
   } catch (error) {
     console.error("Error al activar notificaciones:", error);
+    alert("No se pudieron activar las notificaciones.");
   }
-
 }
+
+window.activarNotificaciones = activarNotificaciones;
+
+/* MODAL DE CONFIRMACIÓN */
 
 let usuarioActual = null;
 let publicacionActual = null;
@@ -338,35 +359,42 @@ const iconoFoto = document.getElementById("iconoFotoPerfil");
 const botones = document.querySelectorAll(".like-btn");
 
 /* MODAL DE CONFIRMACIÓN */
-function confirmarNexora(titulo,mensaje) {
-  return new Promise(resolve=>{
-    const modal=document.getElementById("modalConfirmacion");
-    const tituloModal=document.getElementById("modalTitulo");
-    const mensajeModal=document.getElementById("modalMensaje");
-    const aceptar=document.getElementById("modalAceptar");
-    const cancelar=document.getElementById("modalCancelar");
 
-    tituloModal.textContent=titulo;
-    mensajeModal.textContent=mensaje;
+function confirmarNexora(titulo, mensaje) {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("modalConfirmacion");
+    const tituloModal = document.getElementById("modalTitulo");
+    const mensajeModal = document.getElementById("modalMensaje");
+    const aceptar = document.getElementById("modalAceptar");
+    const cancelar = document.getElementById("modalCancelar");
+
+    tituloModal.textContent = titulo;
+    mensajeModal.textContent = mensaje;
     modal.classList.add("visible");
 
-    function terminar(resultado){
+    function terminar(resultado) {
       modal.classList.remove("visible");
-      aceptar.removeEventListener("click",aceptarAccion);
-      cancelar.removeEventListener("click",cancelarAccion);
-      modal.removeEventListener("click",clickFondo);
+      aceptar.removeEventListener("click", aceptarAccion);
+      cancelar.removeEventListener("click", cancelarAccion);
+      modal.removeEventListener("click", clickFondo);
       resolve(resultado);
     }
 
-    function aceptarAccion(){terminar(true)}
-    function cancelarAccion(){terminar(false)}
-    function clickFondo(evento){
-      if(evento.target===modal)terminar(false);
+    function aceptarAccion() {
+      terminar(true);
     }
 
-    aceptar.addEventListener("click",aceptarAccion);
-    cancelar.addEventListener("click",cancelarAccion);
-    modal.addEventListener("click",clickFondo);
+    function cancelarAccion() {
+      terminar(false);
+    }
+
+    function clickFondo(evento) {
+      if (evento.target === modal) terminar(false);
+    }
+
+    aceptar.addEventListener("click", aceptarAccion);
+    cancelar.addEventListener("click", cancelarAccion);
+    modal.addEventListener("click", clickFondo);
   });
 }
 
