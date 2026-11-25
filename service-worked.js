@@ -1,4 +1,36 @@
+importScripts(
+  "https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"
+);
 
+importScripts(
+  "https://www.gstatic.com/firebasejs/12.19.0/firebase-messaging-compat.js"
+);
+
+// CONFIGURACIÓN DE FIREBASE
+firebase.initializeApp({
+  apiKey: "TU_API_KEY_ACTUAL",
+  authDomain: "nexora-c7a6f.firebaseapp.com",
+  projectId: "nexora-c7a6f",
+  storageBucket: "nexora-c7a6f.firebasestorage.app",
+  messagingSenderId: "322230049221",
+  appId: "1:322230049221:web:c54317e2aafd0a620053ac"
+});
+
+// FIREBASE CLOUD MESSAGING
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  const titulo = payload.notification?.title || "NEXORA";
+
+  const opciones = {
+    body: payload.notification?.body || "Tienes una nueva notificación",
+    icon: "./icon-192.png"
+  };
+
+  return self.registration.showNotification(titulo, opciones);
+});
+
+// SISTEMA DE CACHÉ DE NEXORA
 const CACHE_NAME = "nexora-v2";
 
 const FILES_TO_CACHE = [
@@ -51,3 +83,4 @@ self.addEventListener("fetch", event => {
       .catch(() => caches.match(event.request))
   );
 });
+
