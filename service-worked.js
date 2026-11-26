@@ -8,7 +8,7 @@ importScripts(
 
 // CONFIGURACIÓN DE FIREBASE
 firebase.initializeApp({
-  apiKey: "TU_API_KEY_ACTUAL",
+  apiKey: "AIzaSyAbLF8HxEFCGkn00Mzn_Q3JOPOc2lSkk7Y",
   authDomain: "nexora-c7a6f.firebaseapp.com",
   projectId: "nexora-c7a6f",
   storageBucket: "nexora-c7a6f.firebasestorage.app",
