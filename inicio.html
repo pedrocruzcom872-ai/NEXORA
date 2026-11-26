@@ -179,14 +179,24 @@ nav b{display:block;font-size:21px;margin-bottom:3px}
     <button onclick="enviarComentario()">Enviar</button>
   </div>
 </div>
-  <!-- NAVEGACIÓN -->
+  
+<!-- NAVEGACIÓN -->
 <nav>
   <button onclick="irInicio()"><b>⌂</b>Inicio</button>
   <button onclick="abrirBuscar()"><b>⌕</b>Buscar</button>
   <button onclick="proximamente()"><b>＋</b>Crear</button>
-  <button onclick="abrirActividad()"><b>♡</b>Actividad</button>
+
+  <button onclick="abrirActividad()" id="botonActividad">
+    <span class="icono-actividad">
+      <b>♡</b>
+      <span id="contadorActividad" class="contador-actividad" style="display:none">0</span>
+    </span>
+    Actividad
+  </button>
+
   <button onclick="abrirPerfil()"><b>♙</b>Perfil</button>
 </nav>
+
 
 <!-- ACTIVIDAD -->
 <section id="activityPanel">
