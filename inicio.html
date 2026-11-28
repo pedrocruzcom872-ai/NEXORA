@@ -620,13 +620,15 @@ async function darLike(button) {
     if (button.dataset.liked === "true") {
       await deleteDoc(referencia);
     } else {
+      sonidoLike.currentTime = 0;
+      sonidoLike.play().catch(error =>
+      console.log("Error de sonido:", error)
+      );
+
       await setDoc(referencia, {
         uid: userId,
         createdAt: serverTimestamp()
       });
-
-sonidoLike.currentTime = 0;
-sonidoLike.play().catch(() => {});
 
       const propietario = await obtenerPropietarioPublicacion(postId);
 
