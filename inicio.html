@@ -600,10 +600,35 @@ const observer = new IntersectionObserver(entries => {
 videos.forEach(video => observer.observe(video));
 
 /* LIKES */
-const sonidoLike = new Audio(
-  "https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"
-);
-sonidoLike.volume = 0.35;
+let contextoAudioNexora;
+
+async function reproducirSonidoLike() {
+  const AudioNexora = window.AudioContext || window.webkitAudioContext;
+  if (!AudioNexora) return;
+
+  if (!contextoAudioNexora) {
+    contextoAudioNexora = new AudioNexora();
+  }
+
+  await contextoAudioNexora.resume();
+
+  const oscilador = contextoAudioNexora.createOscillator();
+  const volumen = contextoAudioNexora.createGain();
+
+  oscilador.type = "sine";
+  oscilador.frequency.setValueAtTime(650, contextoAudioNexora.currentTime);
+  oscilador.frequency.exponentialRampToValueAtTime(1050, contextoAudioNexora.currentTime + 0.12);
+
+  volumen.gain.setValueAtTime(0.0001, contextoAudioNexora.currentTime);
+  volumen.gain.exponentialRampToValueAtTime(0.18, contextoAudioNexora.currentTime + 0.02);
+  volumen.gain.exponentialRampToValueAtTime(0.0001, contextoAudioNexora.currentTime + 0.20);
+
+  oscilador.connect(volumen);
+  volumen.connect(contextoAudioNexora.destination);
+
+  oscilador.start();
+  oscilador.stop(contextoAudioNexora.currentTime + 0.21);
+}
 
 botones.forEach(button => button.disabled = true);
 
@@ -620,10 +645,7 @@ async function darLike(button) {
     if (button.dataset.liked === "true") {
       await deleteDoc(referencia);
     } else {
-      sonidoLike.currentTime = 0;
-      sonidoLike.play().catch(error =>
-      console.log("Error de sonido:", error)
-      );
+      reproducirSonidoLike();
 
       await setDoc(referencia, {
         uid: userId,
