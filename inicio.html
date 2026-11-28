@@ -330,7 +330,10 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const messaging = getMessaging(app);
 
+
 async function activarNotificaciones() {
+  const boton = document.getElementById("activarNotificacionesBtn");
+
   try {
     if (!("Notification" in window)) {
       alert("Este navegador no admite notificaciones.");
@@ -341,6 +344,19 @@ async function activarNotificaciones() {
       alert("Este navegador no admite Service Workers.");
       return;
     }
+
+    const aceptado = await confirmarNexora(
+      "Activar notificaciones",
+      "¿Quieres recibir notificaciones de likes, comentarios y actividad en NEXORA?"
+    );
+
+    if (!aceptado) {
+      console.log("El usuario canceló la activación.");
+      return;
+    }
+
+    boton.disabled = true;
+    boton.textContent = "Activando...";
 
     const permiso = await Notification.requestPermission();
 
@@ -359,8 +375,11 @@ async function activarNotificaciones() {
     });
 
     if (token) {
-      console.log("Notificaciones activadas correctamente.");
-      alert("¡Notificaciones activadas en NEXORA!");
+      console.log("Token de NEXORA:", token);
+
+      boton.textContent = "🔔 Notificaciones activadas";
+      alert("¡Notificaciones aceptadas en NEXORA!");
+
     } else {
       alert("No se pudo obtener el registro de notificaciones.");
     }
@@ -368,10 +387,18 @@ async function activarNotificaciones() {
   } catch (error) {
     console.error("Error al activar notificaciones:", error);
     alert("Error: " + error.code + "\n" + error.message);
+
+  } finally {
+    boton.disabled = false;
+
+    if (Notification.permission !== "granted") {
+      boton.textContent = "🔔 Activar notificaciones";
+    }
   }
 }
 
 window.activarNotificaciones = activarNotificaciones;
+
 
 /* VARIABLES PRINCIPALES */
 
