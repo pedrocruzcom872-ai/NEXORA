@@ -673,6 +673,35 @@ async function darLike(button) {
 
 window.darLike = darLike;
 
+  function reproducirSonidoComentario() {
+  const AudioNexora = window.AudioContext || window.webkitAudioContext;
+  if (!AudioNexora) return;
+
+  if (!contextoAudioNexora) {
+    contextoAudioNexora = new AudioNexora();
+  }
+
+    contextoAudioNexora.resume().catch(console.error);
+
+  const ahora = contextoAudioNexora.currentTime;
+  const oscilador = contextoAudioNexora.createOscillator();
+  const volumen = contextoAudioNexora.createGain();
+
+  oscilador.type = "sine";
+  oscilador.frequency.setValueAtTime(520, ahora);
+  oscilador.frequency.exponentialRampToValueAtTime(760, ahora + 0.10);
+
+  volumen.gain.setValueAtTime(0.0001, ahora);
+  volumen.gain.exponentialRampToValueAtTime(0.10, ahora + 0.02);
+  volumen.gain.exponentialRampToValueAtTime(0.0001, ahora + 0.16);
+
+  oscilador.connect(volumen);
+  volumen.connect(contextoAudioNexora.destination);
+
+  oscilador.start(ahora);
+  oscilador.stop(ahora + 0.17);
+  }
+
 /* COMENTARIOS */
 
 window.abrirComentarios = function(postId) {
@@ -680,7 +709,6 @@ window.abrirComentarios = function(postId) {
 
   const panel = document.getElementById("panelComentarios");
   const lista = document.getElementById("listaComentarios");
-
   panel.classList.add("visible");
   lista.textContent = "Cargando comentarios...";
 
@@ -777,6 +805,9 @@ window.enviarComentario = async function() {
         createdAt: serverTimestamp()
       }
     );
+
+
+    reproducirSonidoComentario();
 
     const propietario = await obtenerPropietarioPublicacion(publicacionActual);
 
