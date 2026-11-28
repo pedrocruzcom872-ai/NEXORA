@@ -915,24 +915,43 @@ async function marcarNotificacionesLeidas() {
       documento.data().leida !== true
     );
 
+    if (pendientes.length === 0) {
+      actualizarContadorActividad(0);
+      return;
+    }
+
     await Promise.all(
       pendientes.map(documento =>
-        updateDoc(documento.ref, {leida: true})
+        updateDoc(documento.ref, {
+          leida: true
+        })
       )
     );
+
+    actualizarContadorActividad(0);
+
+    console.log("Notificaciones marcadas como leídas:", pendientes.length);
+
   } catch (error) {
     console.error("Error al marcar notificaciones como leídas:", error);
+
+    alert(
+      "No se pudieron actualizar las notificaciones. " +
+      "Error: " + error.code
+    );
   }
 }
 
 // ABRIR ACTIVIDAD
-window.abrirActividad = function() {
+window.abrirActividad = async function() {
   document.getElementById("profilePanel").classList.remove("visible");
   document.getElementById("searchPanel").style.display = "none";
   document.getElementById("panelRelaciones").classList.remove("visible");
-  document.getElementById("activityPanel").style.display = "block";
 
-  marcarNotificacionesLeidas();
+  const panel = document.getElementById("activityPanel");
+  panel.style.display = "block";
+
+  await marcarNotificacionesLeidas();
 };
 
 // CERRAR ACTIVIDAD
