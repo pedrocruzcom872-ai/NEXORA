@@ -600,6 +600,10 @@ const observer = new IntersectionObserver(entries => {
 videos.forEach(video => observer.observe(video));
 
 /* LIKES */
+const sonidoLike = new Audio(
+  "https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"
+);
+sonidoLike.volume = 0.35;
 
 botones.forEach(button => button.disabled = true);
 
@@ -620,6 +624,9 @@ async function darLike(button) {
         uid: userId,
         createdAt: serverTimestamp()
       });
+
+sonidoLike.currentTime = 0;
+sonidoLike.play().catch(() => {});
 
       const propietario = await obtenerPropietarioPublicacion(postId);
 
